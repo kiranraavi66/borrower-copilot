@@ -308,6 +308,33 @@ export default function Questionnaire({ formData, setFormData, currentStep, setC
                     Total current obligations: <strong>{formatINR(formData.emiAmount)} / month</strong>
                   </div>
                 )}
+
+                {/* Additional Risk Attributes for Existing Debt */}
+                <div className="debt-risk-flags" style={{ marginTop: '1.25rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                  <label className="field-label" style={{ fontSize: '0.95rem' }}>Existing Debt Context (Optional Risk Factors)</label>
+                  
+                  <div className="checkbox-toggle-row" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: '0.5rem' }}>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', cursor: 'pointer', fontSize: '0.9rem', color: 'var(--color-text-muted)' }}>
+                      <input 
+                        type="checkbox" 
+                        checked={!!formData.hasHighCostAppLoans} 
+                        onChange={(e) => updateField('hasHighCostAppLoans', e.target.checked)}
+                        style={{ width: '18px', height: '18px', accentColor: '#38bdf8' }}
+                      />
+                      <span>Includes high-cost fintech app loans (30%+ interest)</span>
+                    </label>
+
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', cursor: 'pointer', fontSize: '0.9rem', color: 'var(--color-text-muted)' }}>
+                      <input 
+                        type="checkbox" 
+                        checked={!!formData.hasRecentEmiBounce} 
+                        onChange={(e) => updateField('hasRecentEmiBounce', e.target.checked)}
+                        style={{ width: '18px', height: '18px', accentColor: '#f43f5e' }}
+                      />
+                      <span>Had an EMI bounce in the past 6 months</span>
+                    </label>
+                  </div>
+                </div>
               </div>
             )}
           </div>

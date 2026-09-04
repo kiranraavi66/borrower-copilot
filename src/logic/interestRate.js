@@ -67,7 +67,7 @@ export function calculateInterestRate(input) {
     scoreExplanation = 'Unspecified credit score widens the estimate band to prevent false precision.';
   }
 
-  // 3. Adjustments based on income predictability
+  // 3. Adjustments based on income predictability & debt history
   let stabilityAdjustment = 0;
   if (input.incomeStability === 'Variable' || input.incomeType === 'Freelancer / informal income') {
     stabilityAdjustment += 0.75;
@@ -75,9 +75,21 @@ export function calculateInterestRate(input) {
     stabilityAdjustment += 1.5;
   }
 
+  // Adjustments for high-cost fintech app debt or recent EMI bounce
+  let debtRiskAdjustment = 0;
+  let debtExplanation = [];
+  if (input.hasHighCostAppLoans) {
+    debtRiskAdjustment += 1.5;
+    debtExplanation.push('Active high-cost fintech app loans (30%+ interest) add a +1.5% risk premium.');
+  }
+  if (input.hasRecentEmiBounce) {
+    debtRiskAdjustment += 2.0;
+    debtExplanation.push('Recent EMI bounce in past 6 months adds a +2.0% credit risk margin.');
+  }
+
   // Final Interest Rate Range
-  const minRate = Math.max(7.5, Number((baseMin + scoreAdjustment + stabilityAdjustment - rangeSpreadModifier).toFixed(2)));
-  const maxRate = Math.min(24.0, Number((baseMax + scoreAdjustment + stabilityAdjustment + rangeSpreadModifier).toFixed(2)));
+  const minRate = Math.max(7.5, Number((baseMin + scoreAdjustment + stabilityAdjustment + debtRiskAdjustment - rangeSpreadModifier).toFixed(2)));
+  const maxRate = Math.min(24.0, Number((baseMax + scoreAdjustment + stabilityAdjustment + debtRiskAdjustment + rangeSpreadModifier).toFixed(2)));
   const midpointRate = Number(((minRate + maxRate) / 2).toFixed(2));
 
   // 4. Processing Fee Assumption (Standard 1.5% of loan amount, capped)
@@ -85,8 +97,7 @@ export function calculateInterestRate(input) {
   const processingFeePercent = 1.5;
   const estimatedProcessingFee = Math.max(1000, Math.min(25000, Math.round(loanAmount * (processingFeePercent / 100))));
 
-  // 5. Estimated All-in APR Cost
-  // APR = Nominal Interest Rate + (Processing Fee % amortized per year over 3-year standard term)
+  // 5. Estimated All-In Annualized Cost (Linear approximation: Nominal Rate + Fee / Tenure)
   const defaultTermYears = purpose === 'Home' ? 15 : 3;
   const feeAnnualizedPercent = (processingFeePercent / defaultTermYears);
   const estimatedApr = Number((midpointRate + feeAnnualizedPercent).toFixed(2));
@@ -95,7 +106,8 @@ export function calculateInterestRate(input) {
     `Base rate range for ${purpose} loans: ${baseMin}% - ${baseMax}%.`,
     scoreExplanation,
     stabilityAdjustment > 0 ? `Income variability adds a +${stabilityAdjustment}% risk margin.` : 'Stable income helps secure competitive rates.',
-    `Estimated processing fee of ${processingFeePercent}% (${estimatedProcessingFee.toLocaleString('en-IN')}) brings total effective APR to ~${estimatedApr}%.`
+    ...debtExplanation,
+    `Estimated processing fee of ${processingFeePercent}% (${estimatedProcessingFee.toLocaleString('en-IN')}) brings estimated all-in annualized cost to ~${estimatedApr}%.`
   ];
 
   return {

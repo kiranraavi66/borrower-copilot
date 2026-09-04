@@ -135,17 +135,17 @@ export default function ResultsDashboard({ formData, results, onRecalculate, onO
         </div>
 
         <div className="dual-amounts-grid">
-          {/* Card A: Lender Sanction Range */}
+          {/* Card A: Lender Capacity Range */}
           <div className="amount-card lender-card">
             <div className="amount-card-header">
-              <span className="card-tag tag-lender">Lender Perspective</span>
-              <h4>Estimated Lender-Likely Sanction Range</h4>
+              <span className="card-tag tag-lender">Lender FOIR Capacity</span>
+              <h4>Estimated Lender-Capacity Range (FOIR-based)</h4>
             </div>
             <div className="amount-value">{lenderSanctionRange.text}</div>
             <div className="why-callout">
               <strong>Why this number?</strong>
               <p>
-                Calculated using standard bank FOIR (Fixed Obligation to Income Ratio) caps of up to 50% of your gross take-home income. Lenders assess maximum collection capacity.
+                Calculated using maximum bank FOIR (Fixed Obligation to Income Ratio) caps of up to 50% of monthly take-home pay. <em>Note: This is a capacity estimate based on income rules, NOT a lender loan approval prediction.</em>
               </p>
             </div>
           </div>
@@ -205,9 +205,9 @@ export default function ResultsDashboard({ formData, results, onRecalculate, onO
           </div>
 
           <div className="rate-stat-card apr-card">
-            <span className="stat-label">Estimated All-In Cost / APR</span>
-            <div className="stat-value apr-value">~ {interestRate.estimatedApr}% APR</div>
-            <p className="stat-sub">Includes interest rate + amortized fees</p>
+            <span className="stat-label">Estimated All-in Annualized Cost</span>
+            <div className="stat-value apr-value">~ {interestRate.estimatedApr}% / yr</div>
+            <p className="stat-sub">Linear approx: Rate midpoint + fee % / tenure</p>
           </div>
         </div>
 

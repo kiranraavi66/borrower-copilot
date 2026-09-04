@@ -143,6 +143,8 @@ export const TEST_BORROWERS = [
       incomeStability: 'Highly variable',
       hasEmi: 'Yes',
       emiAmount: 6500,
+      hasHighCostAppLoans: true,
+      hasRecentEmiBounce: true,
       loanAmount: 150000,
       loanPurpose: 'Vehicle',
       knowsCreditScore: 'No',
@@ -154,19 +156,19 @@ export const TEST_BORROWERS = [
 
     // 14-Point Structured Case Study Analysis
     analysis14Points: {
-      questionsAsked: '9 adaptive questionnaire questions capturing informal gig income, high income variability, active high-cost app loan EMIs, scooter loan target, unknown credit score, and 0 emergency savings.',
+      questionsAsked: '9 adaptive questionnaire questions capturing informal gig income, high income variability, active high-cost app loan EMIs, recent EMI bounce flag, scooter loan target, unknown credit score, and 0 emergency savings.',
       answersSummary: 'Freelancer/Informal, ₹28,000/mo income, Highly Variable, ₹6,500/mo app loan EMI (30%+ interest, 1 bounce), ₹1,50,000 loan request, Vehicle (EV Scooter), UNKNOWN credit score, ₹18,000 essential family expenses, 0 emergency savings.',
       decision: "Don't Borrow",
-      lenderSanctionRange: '₹ 40,000 - ₹ 80,000 (High rejection probability)',
-      borrowerSafeRange: '₹ 0 - ₹ 25,000',
+      lenderSanctionRange: '₹ 25,000 - ₹ 55,000 (High rejection probability)',
+      borrowerSafeRange: '₹ 0 - ₹ 15,000',
       planningRecommendation: 'Do NOT take on new loan debt. Focus immediately on paying off existing 30%+ app loans before attempting vehicle financing.',
-      fairInterestRateBand: '14.5% - 19.5%',
-      estimatedApr: '~ 18.25% APR (High risk informal income & debt stress premium)',
-      emiOutflowCeiling: '₹ 700 / month comfortable ceiling',
-      tenureTradeOff: '2 Years: ₹7,500/mo EMI (10x her safe ceiling!) | 3 Years: ₹5,400/mo EMI. Taking new loan would cause immediate household default.',
+      fairInterestRateBand: '18.0% - 24.0%',
+      estimatedApr: '~ 22.25% (Estimated all-in annualized cost including high-risk app debt & EMI bounce premium)',
+      emiOutflowCeiling: '₹ 0 / month comfortable ceiling',
+      tenureTradeOff: '2 Years: ₹7,500/mo EMI (immediate default risk!) | 3 Years: ₹5,400/mo EMI. Taking new loan would cause severe household deficit.',
       stressTest20Percent: 'FAILS STRESS TEST. A 20% income fall to ₹22,400/mo results in a monthly household DEFICIT of -₹2,100/mo.',
-      confidenceLevel: 'LOW (Score 35/100). Informal income, high existing debt ratio, zero emergency savings, and unknown credit history.',
-      importantNumbersWhy: 'Informal income FOIR cap is 35% (₹9,800 max debt allowance). Existing app loan EMIs (₹6,500) and household expenses (₹18,000) consume ₹24,500 out of ₹28,000 income, leaving only ₹700/mo surplus after a 10% safety cushion.',
+      confidenceLevel: 'LOW (Score 5/100). Informal income, high-cost app loans, recent EMI bounce, zero emergency savings, and unknown credit history.',
+      importantNumbersWhy: 'Informal income FOIR cap is 35%, reduced to 30% due to high-cost app loan stress (₹8,400 max debt allowance). Existing app loan EMIs (₹6,500) and household expenses (₹18,000) consume ₹24,500 out of ₹28,000 income, leaving zero surplus after a 10% safety cushion.',
       negotiationCardAvailable: true
     }
   }

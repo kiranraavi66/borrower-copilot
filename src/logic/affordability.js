@@ -23,6 +23,11 @@ export function calculateAffordability(input, rateDetails) {
     foirCap = 0.45; // 45% cap
   }
 
+  // Reduce FOIR cap if high-cost app loans exist
+  if (input.hasHighCostAppLoans) {
+    foirCap = Math.max(0.25, foirCap - 0.05);
+  }
+
   // 2. Calculate FOIR-based Max EMI Allowance
   const maxFoirObligation = Math.round(monthlyIncome * foirCap);
   const foirAvailableEmi = Math.max(0, maxFoirObligation - existingEmi);

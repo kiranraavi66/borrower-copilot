@@ -59,6 +59,16 @@ export function calculateConfidence(input) {
     factors.push('Zero emergency savings increases risk during unexpected income shocks');
   }
 
+  // 4. Debt & Repayment History Risk Deductions
+  if (input.hasRecentEmiBounce) {
+    score -= 20;
+    factors.push('Recent EMI bounce in past 6 months severely reduces confidence rating');
+  }
+  if (input.hasHighCostAppLoans) {
+    score -= 10;
+    factors.push('Active high-cost fintech app loans indicate existing debt stress');
+  }
+
   // Determine Level
   let level = 'MEDIUM';
   if (score >= 70) {

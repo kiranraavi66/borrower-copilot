@@ -15,12 +15,12 @@ Borrower Copilot guides users through an adaptive 9-step financial assessment an
    - Provides clear rationale explaining monthly cash flow strain and risk factors.
 2. **MAXIMUM BORROWING AMOUNT**:
    - Displays **TWO separate figures**:
-     - *Estimated Lender-Likely Sanction Range* (maximum bank credit limit under 50% FOIR rules).
+     - *Estimated Lender-Capacity Range (FOIR-based)* (maximum bank debt capacity under 50% FOIR rules; capacity estimate, NOT a loan approval prediction).
      - *Borrower-Safe Affordable Amount* (maximum loan supported while protecting essential household expenses and a 10% safety cushion).
    - Prominently instructs borrowers to plan using the **Borrower-Safe Amount**.
-3. **FAIR INTEREST RATE & ALL-IN APR**:
-   - Calculates a fair expected market rate band (`X% - Y%`) based on loan purpose, income stability, and credit score risk tiers.
-   - Computes an **Estimated All-In APR Cost** including a standard 1.5% processing fee assumption.
+3. **FAIR INTEREST RATE & ESTIMATED ALL-IN ANNUALIZED COST**:
+   - Calculates a fair expected market rate band (`X% - Y%`) based on loan purpose, income stability, credit score risk tiers, high-cost app debt, and EMI bounce history.
+   - Computes an **Estimated All-In Annualized Cost** using a linear approximation formula (midpoint rate + fee % / tenure).
    - *Never displays a single "guaranteed" interest rate.*
 4. **EMI / MONTHLY OUTFLOW CEILING & STRESS TEST**:
    - Calculates a **Comfortable Monthly EMI Ceiling**.
