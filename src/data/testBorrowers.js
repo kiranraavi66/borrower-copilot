@@ -71,7 +71,7 @@ export const TEST_BORROWERS = [
     // Background Details
     profileDetails: {
       employment: 'Self-employed Business Owner (14 years kirana shop)',
-      income: '₹ 60,000 / month (Combined household cash average: ₹40k-₹80k shop + ₹18k wife teaching)',
+      income: '₹ 60,000 / month (Normalized midpoint of ₹40k-₹80k shop cash earnings; wife\'s ₹18k teaching income is secondary context)',
       taxReturn: '₹ 4,20,000 / year reported ITR',
       assets: 'Owns unencumbered shop premises worth ~₹ 45,00,000',
       existingDebt: '₹ 0 (Never taken a formal bank loan)',
@@ -99,7 +99,7 @@ export const TEST_BORROWERS = [
     // 14-Point Structured Case Study Analysis
     analysis14Points: {
       questionsAsked: '9 adaptive questionnaire questions capturing cash business income, income variability, lack of existing EMIs, business expansion loan target, unknown credit score, and household costs.',
-      answersSummary: 'Business owner (Kirana 14 yrs), ₹60,000/mo household income, Variable, ₹0 existing EMI, ₹15,00,000 loan request, Business, UNKNOWN credit score (no credit history), ₹25,00,000 unencumbered shop asset, ₹25,000 essential expenses, 3 months emergency savings.',
+      answersSummary: 'Business owner (Kirana 14 yrs), ₹60,000/mo business income (midpoint), Variable, ₹0 existing EMI, ₹15,00,000 loan request, Business, UNKNOWN credit score (no credit history), ₹45,00,000 unencumbered shop asset, ₹25,000 essential expenses, 3 months emergency savings.',
       decision: "Don't Borrow (or Borrow Less)",
       lenderSanctionRange: '₹ 7,40,000 - ₹ 8,60,000',
       borrowerSafeRange: '₹ 7,00,000 - ₹ 8,20,000',

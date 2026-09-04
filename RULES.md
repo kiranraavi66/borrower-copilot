@@ -171,7 +171,7 @@ The documented rules produce distinct, explainable results for the three Lokta c
 
 2. **Ravi (Kirana Store Owner, Variable Income, Unknown Credit Score, ₹15L Request)**:
    - **Output**: **`Don't Borrow`** (or Borrow Less) | **`MEDIUM Confidence`** (55/100).
-   - **Context & Household Income**: Modeled using net household take-home cash income of **₹60,000/month** (midpoint of his ₹40k-₹80k business cash earnings + wife's ₹18k teaching income). Reported ITR is ₹4.2L/year.
+   - **Business Income Definition (Option A)**: Modeled using **₹60,000/month** as Ravi's normalized primary business cash income midpoint (from his ₹40,000–₹80,000/month shop earnings range). His wife's ₹18,000/month teaching income is noted as qualitative household context but is NOT included in the uncollateralized loan affordability calculation engine. Reported ITR is ₹4,20,000/year.
    - **Property Asset Note**: Owns unencumbered shop premises worth **₹45,00,000**. While this provides real estate asset collateral for secured bank loans, our cash-flow FOIR engine evaluates uncollateralized borrowing capacity based strictly on monthly cash flows, which caps his safe principal at ~₹8.2L.
    - **Credit Score**: Remains explicitly **`UNKNOWN`** (no formal credit history), which widens his interest rate band (13.25%-17.25%) without treating score as 0 or 300.
 

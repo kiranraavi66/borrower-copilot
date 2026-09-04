@@ -82,7 +82,7 @@ The application will run locally in your web browser (typically at `http://local
 The app includes three pre-configured test borrower personas:
 
 - **Priya (29, Bengaluru)**: Salaried MNC Engineer (₹1.1L income, ₹14k EMI, 780 CIBIL score, ₹8L wedding loan) $\rightarrow$ **`Borrow`** | **`HIGH Confidence`**.
-- **Ravi (42, Mysuru)**: Self-Employed Kirana Store Owner (₹60k household cash income, ₹45L unencumbered shop asset, unknown credit score, ₹15L business loan) $\rightarrow$ **`Don't Borrow`** | **`MEDIUM Confidence`**.
+- **Ravi (42, Mysuru)**: Self-Employed Kirana Store Owner (₹60k/mo business cash income midpoint, ₹45L unencumbered shop asset, unknown credit score, ₹15L business loan) $\rightarrow$ **`Don't Borrow`** | **`MEDIUM Confidence`**.
 - **Anita (35, Hubballi)**: Informal Delivery Rider (₹28k income, ₹6.5k high-cost app loan EMIs with 1 recent bounce, ₹1.5L scooter loan) $\rightarrow$ **`Don't Borrow`** | **`LOW Confidence`**.
 
 Click **"Load Profile into Live Engine"** on any test borrower card to immediately run their parameters through the live decision engine.
