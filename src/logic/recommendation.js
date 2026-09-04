@@ -63,6 +63,16 @@ export function calculateRecommendation(input, affordability, confidence) {
     guidanceNote: "Always plan your budget using the Borrower-Safe Amount (₹" + safeMax.toLocaleString('en-IN') + "), NOT the Lender Sanction Amount. Lenders calculate how much they can legally collect, whereas the Borrower-Safe limit ensures you maintain household stability."
   };
 
+  // 5. Secured Loan / Loan Against Property (LAP) Advice for Business Borrowers
+  let securedLoanAdvice = null;
+  if (input.loanPurpose === 'Business' || input.incomeType === 'Business owner') {
+    securedLoanAdvice = {
+      title: "Explore Secured Business Loan / Loan Against Property (LAP)",
+      recommendation: "Because you operate an established business and may own unencumbered commercial premises (e.g., shop property), you should explore a Secured Business Loan or Loan Against Property (LAP). LAP structures offer lower interest rates (9.5%–12.5%) and longer repayment tenures (10–15 years), which lowers the required monthly EMI.",
+      importantNuance: "Collateral Nuance: Pledging collateral opens secured product options and longer tenures, but collateral does NOT automatically make an unaffordable EMI affordable. Monthly cash flow is still required to service the loan and protect your property."
+    };
+  }
+
   return {
     decision,
     badgeColor,
@@ -72,6 +82,7 @@ export function calculateRecommendation(input, affordability, confidence) {
     safeMax,
     lenderMax,
     planningGuidance,
+    securedLoanAdvice,
     why
   };
 }

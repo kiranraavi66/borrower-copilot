@@ -103,14 +103,14 @@ export const TEST_BORROWERS = [
       decision: "Don't Borrow (or Borrow Less)",
       lenderSanctionRange: '₹ 7,40,000 - ₹ 8,60,000',
       borrowerSafeRange: '₹ 7,00,000 - ₹ 8,20,000',
-      planningRecommendation: 'Use the Borrower-Safe Amount (₹8.2L). Do NOT attempt to borrow ₹15L uncollateralized, as repayment would consume over 60% of net monthly cash income.',
+      planningRecommendation: 'Use the Borrower-Safe Amount (₹8.2L) for uncollateralized planning. Since Ravi owns an unencumbered shop premises worth ₹45,00,000 and seeks business expansion funding, he should explore a Secured Business Loan or Loan Against Property (LAP) for longer tenures (10-15 yrs) and lower interest rates. However, collateral changes product options but does NOT automatically make an unaffordable EMI affordable — monthly cash flow is still required to service the EMI.',
       fairInterestRateBand: '13.25% - 17.25%',
       estimatedApr: '~ 15.75% APR (includes 1.5% fee + unhedged variable income risk premium)',
       emiOutflowCeiling: '₹ 24,000 / month comfortable ceiling',
       tenureTradeOff: '3 Years: ₹28,800/mo EMI (exceeds ceiling) | 5 Years: ₹19,800/mo EMI (Total Interest ₹3.88L). 5-year tenure recommended if loan is reduced to ₹7L-₹8L.',
       stressTest20Percent: 'Passes mild stress test. If cash income falls 20% to ₹48,000/mo, net monthly surplus narrows to ₹23,000/mo.',
       confidenceLevel: 'MEDIUM (Score 55/100). Unknown credit score and variable cash income widen the interest rate band.',
-      importantNumbersWhy: 'Business owner FOIR cap of 40% limits max monthly debt obligations to ₹24,000/mo on ₹60k income. While shop asset worth ₹45L is strong collateral, uncollateralized cash flow only supports a maximum principal of ~₹8.2L.',
+      importantNumbersWhy: 'Business owner FOIR cap of 40% limits max monthly debt obligations to ₹24,000/mo on ₹60k income. Uncollateralized cash flow supports a safe principal of ~₹8.2L. Because he owns an unencumbered shop asset worth ₹45L, he should evaluate a Secured Business Loan or Loan Against Property (LAP). Note: Collateral expands product options and tenures, but does NOT automatically make an unaffordable EMI affordable.',
       negotiationCardAvailable: true
     }
   },

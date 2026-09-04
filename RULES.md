@@ -48,9 +48,10 @@ Borrower Copilot estimates **TWO distinct maximum borrowing amounts** to highlig
    - If Requested Loan $>$ Borrower-Safe Max AND $\le 1.15 \times$ Lender-Capacity Max $\rightarrow$ **`Borrow Less`**.
    - If Requested Loan $> 1.15 \times$ Lender-Capacity Max OR Comfortable EMI $\le 0 \rightarrow$ **`Don't Borrow`**.
 
-4. **Why Borrower-Safe Amount is Recommended for Planning**:
-   - Lenders calculate the maximum debt they can legally collect from your income.
-   - The **Borrower-Safe Amount** ensures you retain sufficient monthly surplus to handle medical emergencies, inflation, or temporary income drops.
+5. **Secured Business Loans & Loan Against Property (LAP) Recommendation**:
+   - For borrowers who operate an established business and own unencumbered property assets (e.g., commercial shop premises worth ₹45 Lakhs), Borrower Copilot recommends exploring **Secured Business Loans** or **Loan Against Property (LAP)** as an alternative product structure.
+   - LAP structures offer lower interest rates (typically 9.5%–12.5%) and significantly longer tenures (10–15 years), which lowers the required monthly EMI for a given loan amount.
+   - **Crucial Rule on Collateral vs. Cash Flow**: Pledging collateral opens secured loan products and longer tenures, but **collateral does NOT automatically make an unaffordable monthly EMI affordable**. Underwriting and borrower safety still require verifiable monthly cash flow to meet EMI obligations without risking asset loss.
 
 ---
 
@@ -172,7 +173,7 @@ The documented rules produce distinct, explainable results for the three Lokta c
 2. **Ravi (Kirana Store Owner, Variable Income, Unknown Credit Score, ₹15L Request)**:
    - **Output**: **`Don't Borrow`** (or Borrow Less) | **`MEDIUM Confidence`** (55/100).
    - **Business Income Definition (Option A)**: Modeled using **₹60,000/month** as Ravi's normalized primary business cash income midpoint (from his ₹40,000–₹80,000/month shop earnings range). His wife's ₹18,000/month teaching income is noted as qualitative household context but is NOT included in the uncollateralized loan affordability calculation engine. Reported ITR is ₹4,20,000/year.
-   - **Property Asset Note**: Owns unencumbered shop premises worth **₹45,00,000**. While this provides real estate asset collateral for secured bank loans, our cash-flow FOIR engine evaluates uncollateralized borrowing capacity based strictly on monthly cash flows, which caps his safe principal at ~₹8.2L.
+   - **Secured Loan & Property Asset Recommendation**: Unsecured cash-flow capacity caps his safe principal at ~₹8.2L. However, because Ravi owns an unencumbered shop premises worth **₹45,00,000** and seeks business expansion funding (stock line + delivery vehicle), he should explore a **Secured Business Loan** or **Loan Against Property (LAP)** to access lower interest rates (9.5%–12.5%) and longer tenures (10–15 years). **Important Nuance**: While collateral changes product options and tenures, collateral does **NOT** automatically make an unaffordable EMI affordable — monthly cash flow is still required to service the loan payments.
    - **Credit Score**: Remains explicitly **`UNKNOWN`** (no formal credit history), which widens his interest rate band (13.25%-17.25%) without treating score as 0 or 300.
 
 3. **Anita (Informal Delivery Rider, ₹28k Income, ₹6.5k High-Cost App Loans, 1 Bounce)**:

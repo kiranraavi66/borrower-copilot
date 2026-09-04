@@ -176,6 +176,20 @@ export default function ResultsDashboard({ formData, results, onRecalculate, onO
             </p>
           </div>
         </div>
+
+        {/* Secured Loan / LAP Advice Callout */}
+        {recommendation.securedLoanAdvice && (
+          <div className="secured-loan-advice-box">
+            <div className="secured-advice-header">
+              <Building2 size={22} className="text-amber" />
+              <h4>{recommendation.securedLoanAdvice.title}</h4>
+            </div>
+            <p className="secured-advice-body">{recommendation.securedLoanAdvice.recommendation}</p>
+            <div className="secured-nuance-callout">
+              <strong>⚠️ Essential Collateral Nuance:</strong> {recommendation.securedLoanAdvice.importantNuance}
+            </div>
+          </div>
+        )}
       </section>
 
       {/* 3. FAIR INTEREST RATE SECTION */}
