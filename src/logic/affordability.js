@@ -52,17 +52,31 @@ export function calculateAffordability(input, rateDetails) {
   const lenderLikelyMaxAmount = calculatePrincipalFromEmi(foirAvailableEmi, annualInterestRate, defaultTenureMonths);
   const borrowerSafeMaxAmount = calculatePrincipalFromEmi(comfortableEmiCeiling, annualInterestRate, defaultTenureMonths);
 
-  // Ranges (+/- 10%)
+  // DEFENSIVE RANGE VALIDATION: Ensure min <= max always
+  const lenderRawMin = Math.round(lenderLikelyMaxAmount * 0.90);
+  const lenderRawMax = Math.round(lenderLikelyMaxAmount * 1.05);
+  const lenderMinVal = Math.min(lenderRawMin, lenderRawMax);
+  const lenderMaxVal = Math.max(lenderRawMin, lenderRawMax);
+
+  const safeRawMin = Math.round(borrowerSafeMaxAmount * 0.85);
+  const safeRawMax = Math.round(borrowerSafeMaxAmount);
+  const safeMinVal = Math.min(safeRawMin, safeRawMax);
+  const safeMaxVal = Math.max(safeRawMin, safeRawMax);
+
   const lenderSanctionRange = {
-    min: Math.round(lenderLikelyMaxAmount * 0.90),
-    max: Math.round(lenderLikelyMaxAmount * 1.05),
-    text: `₹ ${Math.round(lenderLikelyMaxAmount * 0.90).toLocaleString('en-IN')} - ₹ ${Math.round(lenderLikelyMaxAmount * 1.05).toLocaleString('en-IN')}`
+    min: lenderMinVal,
+    max: lenderMaxVal,
+    text: lenderMaxVal > 0 
+      ? `₹ ${lenderMinVal.toLocaleString('en-IN')} - ₹ ${lenderMaxVal.toLocaleString('en-IN')}`
+      : '₹ 0 (No Lender Capacity)'
   };
 
   const borrowerSafeRange = {
-    min: Math.round(borrowerSafeMaxAmount * 0.85),
-    max: Math.round(borrowerSafeMaxAmount),
-    text: `₹ ${Math.round(borrowerSafeMaxAmount * 0.85).toLocaleString('en-IN')} - ₹ ${Math.round(borrowerSafeMaxAmount).toLocaleString('en-IN')}`
+    min: safeMinVal,
+    max: safeMaxVal,
+    text: safeMaxVal > 0 
+      ? `₹ ${safeMinVal.toLocaleString('en-IN')} - ₹ ${safeMaxVal.toLocaleString('en-IN')}`
+      : '₹ 0 (No Borrower-Safe Capacity)'
   };
 
   // 6. Stress Case: 20% Income Drop Scenario
@@ -78,7 +92,7 @@ export function calculateAffordability(input, rateDetails) {
     stressedNetSurplus,
     isSurplusDeficit: stressedNetSurplus < 0,
     why: stressedNetSurplus < 0 
-      ? `A 20% income reduction to ₹${stressedIncome.toLocaleString('en-IN')} would cause household deficit of ₹${Math.abs(stressedNetSurplus).toLocaleString('en-IN')}/month.`
+      ? `A 20% income reduction to ₹${stressedIncome.toLocaleString('en-IN')} would cause a monthly household DEFICIT of -₹${Math.abs(stressedNetSurplus).toLocaleString('en-IN')}/month.`
       : `If income drops 20% to ₹${stressedIncome.toLocaleString('en-IN')}, monthly net surplus narrows to ₹${stressedNetSurplus.toLocaleString('en-IN')}.`
   };
 
@@ -95,7 +109,7 @@ export function calculateAffordability(input, rateDetails) {
       months,
       monthlyEmi: calcEmi,
       totalInterest,
-      isComfortable: calcEmi <= comfortableEmiCeiling
+      isComfortable: comfortableEmiCeiling > 0 && calcEmi <= comfortableEmiCeiling
     };
   });
 
