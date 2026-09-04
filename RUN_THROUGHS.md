@@ -57,7 +57,7 @@ All metrics, decision rules, interest rate bands, stress-test calculations, and 
 #### 3. Fair Interest-Rate Band & All-In Annualized Cost
 - **Fair Expected Interest-Rate Band**: **11.00% – 14.50%** (Midpoint: **12.75%**)
 - **Processing Fee Assumption**: 1.5% of principal = **₹12,000** (plus 18% GST = ₹14,160 all-in fee cost).
-- **Estimated All-In Annualized Cost**: **~13.25% APR** (Midpoint rate 12.75% + 0.50%/year linearized fee spread).
+- **Estimated All-In Annualized Cost**: **~13.25% APR** (Midpoint rate 12.75% + 0.50%/year linearized fee spread over 3 years).
 - *Pricing Rationale*: Base personal loan range (11.5%–15.0%) receives a -0.50% prime discount due to her 780 CIBIL score and verified MNC employment stability.
 
 #### 4. EMI Ceiling & 20% Income Stress Test
@@ -94,7 +94,7 @@ All metrics, decision rules, interest rate bands, stress-test calculations, and 
 - **Income Structure**: Business cash earnings fluctuate between **₹40,000 – ₹80,000 / month**. Reported ITR is **₹4,20,000 / year**.
   - **Option A Normalized Primary Income**: **₹60,000 / month** (midpoint of shop cash earnings used for FOIR calculations).
   - **Spouse Income Context**: Wife earns **₹18,000 / month** teaching (noted as qualitative household context; excluded from primary uncollateralized loan calculation engine).
-- **Property Asset**: Owns unencumbered shop premises worth approximately **₹45,00,000**.
+- **Property Collateral**: Owns unencumbered shop premises worth **₹45,00,000**.
 - **Existing Debt Obligations**: **₹0 / month** (never taken a formal bank loan).
 - **Credit Bureau Status**: **UNKNOWN** (No formal credit history / CIBIL score).
 - **Essential Household Expenses**: **₹25,000 / month**.
@@ -103,7 +103,7 @@ All metrics, decision rules, interest rate bands, stress-test calculations, and 
 ### Loan Request
 - **Requested Amount**: **₹15,00,000**
 - **Loan Purpose**: Business Expansion (Second stock line + delivery vehicle)
-- **Desired Tenure**: 3 Years (36 months) unsecured requested
+- **Desired Tenure**: 10 Years (120 months) via MSME LAP
 
 ### Mandatory & Adaptive Questionnaire Flow
 1. *Income Type*: Business owner
@@ -112,61 +112,70 @@ All metrics, decision rules, interest rate bands, stress-test calculations, and 
 4. *Existing EMIs*: No $\rightarrow$ ₹0/month
 5. *Loan Amount Request*: ₹15,00,000
 6. *Loan Purpose*: Business
-7. *Credit Score Status*: No, credit score unknown $\rightarrow$ **Adaptive Branch Triggered**: Recorded as `UNKNOWN` (widens rate spread by ±1.25%)
-8. *Essential Living Costs*: ₹25,000
-9. *Emergency Reserve*: Yes $\rightarrow$ 3 months
+7. *Property Collateral Value*: ₹45,00,000 (Unencumbered commercial shop premises)
+8. *Credit Score Status*: No, credit score unknown $\rightarrow$ **Adaptive Branch Triggered**: Recorded as `UNKNOWN`
+9. *Essential Living Costs*: ₹25,000
+10. *Emergency Reserve*: Yes $\rightarrow$ 3 months
 
 ---
 
-### Why Unsecured Fails & Routing to MSME Loan Against Property (LAP)
+### Why Unsecured Personal Loan Fails & MSME LAP Routing Analysis
 
-- **Unsecured Personal/Business Loan Failure**: An unsecured ₹15,00,000 loan over 3 years requires ~₹52,382/month EMI at 15.5% midpoint rate. On a ₹60,000 business cash income (40% FOIR cap = ₹24,000 max EMI limit), an unsecured ₹15L loan would consume **87% of net earnings**, causing immediate default.
-- **MSME Loan Against Property (LAP) Routing**: Because Ravi owns unencumbered commercial shop premises worth **₹45,00,000**, the engine routes him to a **Secured MSME Loan Against Property (LAP)**.
+- **Unsecured Personal Loan Failure**: An unsecured ₹15,00,000 loan over 3 years requires ~₹52,382/month EMI at 15.5% midpoint rate. On a ₹60,000 business cash income (40% FOIR cap = ₹24,000 max EMI limit), an unsecured ₹15L loan would consume **87% of net earnings**, causing immediate default.
+- **MSME Loan Against Property (LAP) Routing**: Because Ravi owns unencumbered commercial shop premises worth **₹45,00,000**, the engine routes his facility to **MSME Loan Against Property (LAP)**.
 - **Collateral & LTV Analysis**:
   - *Shop Collateral Value*: **₹45,00,000**
   - *Loan Target*: **₹15,00,000**
   - *Loan-to-Value (LTV) Ratio*: `₹15,00,000 / ₹45,00,000 = 33.3% LTV` (extremely safe collateral ratio for lenders; standard LAP allows up to 60%–65% LTV).
-- **Sustainable 84-Month (7-Year) / 180-Month (15-Year) EMI**:
-  - Under a 7-year (84-month) to 12-year LAP structure at 10.5% secured rate, the monthly EMI for ₹15L drops to **₹15,670 – ₹25,500 / month**, bringing repayment right into his **₹24,000 / month** comfortable ceiling.
-- **Collateral vs. Cash Flow Rule**:
-  > ⚠️ **Core Principle**: Pledging collateral (shop premises) opens secured LAP product options, lowers interest rates (9.5%–12.5%), and extends tenures (10–15 years). However, **collateral does NOT automatically make an unaffordable EMI affordable**—verifiable monthly cash flow is still required to service EMIs without risking shop foreclosure.
+- **120-Month (10-Year) Sustainable EMI Calculation**:
+  - Under a 10-year (120-month) LAP structure at 10.75% midpoint secured rate, the monthly EMI for ₹15L is **~₹20,227 / month** (~33.6% FOIR).
+  - Since **₹20,227 / month** fits comfortably under his **₹24,000 / month** ceiling, his ₹15L expansion loan is **fully viable via LAP**!
 
 ---
 
 ### Application Core Outputs & Underwriting Results
 
 #### 1. Decision Verdict
-- **Decision Recommendation**: **`Don't Borrow`** (for ₹15L unsecured personal/business loan; Badge: `red`)
-- **Title**: **High Financial Risk for Unsecured Loan — Route to Secured LAP**
-- **Summary**: Requested unsecured loan amount of ₹15,00,000 exceeds safe cash-flow capacity (~₹6.87L max unsecured). Pledging shop premises via LAP is required.
+- **Decision Recommendation**: **`Borrow`** (via MSME Loan Against Property; Badge: `emerald`)
+- **Title**: **Financially Viable via MSME Loan Against Property (LAP)**
+- **Summary**: Your requested loan amount of ₹15,00,000 is viable via MSME Loan Against Property (LAP) by pledging your ₹45,00,000 commercial shop premises at 33.3% LTV over an extended 10-year tenure.
+- **Underwriting Rationale**:
+  - *"Unsecured personal loan rejected (EMI would exceed 85% of income). Viable exclusively via MSME Loan Against Property (LAP) by pledging your ₹45L unencumbered commercial shop (33.3% LTV) over an extended 10-year tenure."*
+  - *"10-year (120-month) LAP EMI of ~₹20,200/month sits comfortably under your ₹24,000/month ceiling (33.6% FOIR)."*
+  - *"Pledging your commercial shop asset secures a competitive interest rate band of 9.50% - 12.00%."*
 
-#### 2. Capacity Comparison: Unsecured vs. Secured LAP
-- **Unsecured Lender-Capacity Range (FOIR-based)**: **₹6,18,722 – ₹7,21,842** (Max Unsecured: **₹6,87,469**)
-- **Unsecured Borrower-Safe Range**: **₹5,84,349 – ₹6,87,469** (Safe Unsecured: **₹6,87,469**)
-- **Secured LAP Capacity (at 33.3% LTV)**: Up to **₹25,00,000 – ₹29,25,000** (supported by ₹45L shop asset collateral, subject to cash-flow EMI ceiling).
+#### 2. Capacity Comparison: Secured LAP Capacity
+- **Estimated Lender-Capacity Range (10-Year LAP)**: **₹15,84,290 – ₹18,48,338** (Midpoint LAP Capacity: **₹17,60,322**)
+- **Borrower-Safe Affordable Range (10-Year LAP)**: **₹14,96,274 – ₹17,60,322** (Midpoint Safe: **₹17,60,322**)
+  - *Explanation*: With a 10-year LAP tenure and 40% FOIR cap (₹24,000/mo ceiling), his cash flow supports up to **₹17.60 Lakhs** safe principal, fully covering his requested ₹15,00,000 target.
 
-#### 3. Fair Interest-Rate Band: Unsecured vs. LAP
-- **Unsecured Business Rate Band**: **12.25% – 18.75%** (Midpoint: **15.50%**, All-In APR: **~16.00%**)
-- **Secured LAP Rate Band**: **9.50% – 12.50%** (Midpoint: **11.00%**, All-In APR: **~11.50%**)
-- *Processing Fee*: 1.5% = **₹22,500**.
+#### 3. Fair Interest-Rate Band & All-In Cost: Secured LAP
+- **Secured LAP Rate Band**: **9.50% – 12.00%** (Midpoint: **10.75%**)
+- **Processing Fee Assumption**: 1.5% of principal = **₹22,500** (capped).
+- **Estimated All-In Annualized Cost**: **~10.90% APR** (Midpoint rate 10.75% + 0.15%/year linearized fee spread over 10 years).
 
 #### 4. EMI Ceiling & 20% Income Stress Test
-- **Comfortable Monthly EMI Ceiling**: **₹24,000 / month** (capped at 40% FOIR on ₹60k business income).
-- **20% Income-Drop Stress Test**: **PASSES MILD STRESS TEST BEFORE NEW LOAN**
+- **Comfortable Monthly EMI Ceiling**: **₹24,000 / month** (40% FOIR cap on ₹60k business income).
+- **10-Year LAP Monthly EMI**: **~₹20,200 / month**
+- **20% Income-Drop Stress Test**: **PASSES STRESS TEST UNDER 10-YEAR LAP**
   - *Stressed Income (20% drop)*: **₹48,000 / month**
-  - *Stressed Surplus*: `₹48,000 - ₹25,000 (expenses) = +₹23,000 / month`.
-- **Confidence Rating**: **MEDIUM (Score: 62 / 100)** — Business owner (+12), Variable (+10), `UNKNOWN` credit score (+10), 3+ months emergency reserve (+30).
+  - *Stressed Net Surplus*: `₹48,000 - ₹25,000 (expenses) = +₹23,000 / month`.
+  - Net surplus of +₹23,000/month comfortably covers the **~₹20,200 / month** LAP EMI under a 20% income reduction.
+
+#### 5. Confidence Score
+- **Confidence Rating**: **MEDIUM / HIGH (Score: 62 / 100)** — Business owner (+12), Variable (+10), `UNKNOWN` score (+10), 3+ months emergency reserve (+30). High asset security for LAP.
 
 ---
 
-### Negotiation Card Strategy: Ravi
+### Negotiation Card & Branch Pitch Script: Ravi
 
-- **Opening Position**: Present the shop premises deed worth ₹45,00,000 to apply for an **MSME Loan Against Property (LAP)** at 33.3% LTV rather than an expensive 16%+ unsecured business loan.
+- **Target Opening Rate Band**: **9.50% – 10.50%**
+- **Recommended Tenure**: **84 – 120 months** (7 – 10 Years)
+- **Branch Pitch Script**:
+  > *"Do not process as an unsecured business loan. I am offering prime unencumbered commercial shop premises worth ₹45 Lakhs for a ₹15 Lakh facility (33.3% LTV). I am seeking MSME LAP pricing under 10.5% over an 84 to 120 month tenure."*
 - **Key Numbers to Verify**:
-  - Property legal valuation and title search fees.
-  - LAP interest rate band (target 10.0%–11.0%) and 84-to-120 month tenure schedule.
-- **Branch Script**:
-  > *"I am offering unencumbered shop premises worth ₹45 Lakhs as collateral for a ₹15 Lakh expansion loan (33.3% LTV). I want this structured as a 10-year MSME LAP at an interest rate under 11.0%, keeping my monthly EMI within my ₹24,000 comfortable ceiling."*
+  - Legal valuation and title search charges for the shop premises.
+  - Prepayment flexibility after 12 months.
 
 ---
 
@@ -176,17 +185,17 @@ All metrics, decision rules, interest rate bands, stress-test calculations, and 
 
 ### Borrower Context & Financial Profile
 - **Demographics**: 35 years old | Hubballi, Karnataka
-- **Employment**: Informal Gig Worker (Delivery rider + home tailoring).
+- **Employment**: Informal Gig Worker (Delivery platform rider + home tailoring).
 - **Monthly Net Earnings**: Fluctuates between **₹26,000 – ₹30,000 / month** (Average: **₹28,000 / month**).
 - **Family Status**: 2 children; husband unemployed for the past 8 months.
 - **Existing Debt Stress**: **₹6,500 / month** across 3 active high-cost fintech app loans (30%+ interest; outstanding principal ~₹35,000).
-- **Repayment History**: **1 EMI bounce** in past 6 months due to cash crunch.
+- **Repayment History**: **1 EMI bounce** in the past 6 months due to cash crunch.
 - **Credit Bureau Status**: **UNKNOWN** (No formal credit bureau history / high credit risk flags).
 - **Essential Household Expenses**: **₹18,00,00** (₹18,000 / month family living costs).
 - **Emergency Reserve**: **0 Months** (Zero liquid savings).
 
 ### Loan Request
-- **Requested Amount**: **₹1,50,000**
+- **Target Principal**: **₹1,50,000**
 - **Loan Purpose**: Vehicle Loan (Electric scooter for delivery runs)
 - **Desired Tenure**: 3 Years (36 months)
 
@@ -255,8 +264,6 @@ All metrics, decision rules, interest rate bands, stress-test calculations, and 
 
 ---
 
----
-
 ## Comparative QA Verification Summary
 
 | Metric / Parameter | Priya | Ravi | Anita |
@@ -268,11 +275,11 @@ All metrics, decision rules, interest rate bands, stress-test calculations, and 
 | **FOIR Cap Applied** | 50% | 40% | 30% (5% App Penalty) |
 | **Comfortable EMI Ceiling** | **₹40,000 / month** | **₹24,000 / month** | **₹700 / month (Safe: ₹0)** |
 | **Requested Loan** | ₹8,00,000 (Personal) | ₹15,00,000 (Business) | ₹1,50,000 (Vehicle) |
-| **Decision Recommendation** | **`Borrow`** | **`Don't Borrow` (Route LAP)** | **`Don't Borrow`** |
-| **Lender-Capacity Range** | ₹10,99,076 – ₹12,82,255 | ₹6,18,722 – ₹7,21,842 | ₹49,413 – ₹57,648 |
-| **Borrower-Safe Range** | **₹10,12,699 – ₹11,91,410** | **₹5,84,349 – ₹6,87,469** | **₹17,193 – ₹20,227** |
-| **Fair Interest Rate Band** | 11.00% – 14.50% | 12.25% – 18.75% (LAP: 9.5–12.5%) | 12.50% – 17.25% (App: 30%+) |
-| **Estimated All-In APR** | ~13.25% APR | ~16.00% APR | ~15.38% APR |
-| **20% Stress Test Result** | **PASS** (+₹29,000 surplus) | **PASS** (+₹23,000 surplus) | **FAIL** (-₹2,100 deficit) |
-| **Confidence Score** | **HIGH (100 / 100)** | **MEDIUM (62 / 100)** | **LOW (0 / 100)** |
-| **Negotiation / Action Focus** | Rate discount & fee waiver | **LAP at 33.3% LTV (Shop ₹45L)** | **Debt resolution & PM SVANidhi** |
+| **Decision Recommendation** | **`Borrow`** | **`Borrow` (via MSME LAP)** | **`Don't Borrow`** |
+| **Lender-Capacity Range** | ₹10,99,076 – ₹12,82,255 | ₹15,84,290 – ₹18,48,338 (LAP) | ₹49,413 – ₹57,648 |
+| **Borrower-Safe Range** | **₹10,12,699 – ₹11,91,410** | **₹14,96,274 – ₹17,60,322** (LAP) | **₹17,193 – ₹20,227** |
+| **Fair Interest Rate Band** | 11.00% – 14.50% | 9.50% – 12.00% (LAP) | 12.50% – 17.25% (App: 30%+) |
+| **Estimated All-In APR** | ~13.25% APR | ~10.90% APR | ~15.38% APR |
+| **20% Income Stress Test** | **PASS** (+₹29,000 surplus) | **PASS** (+₹23,000 surplus under LAP) | **FAIL** (-₹2,100 deficit) |
+| **Confidence Score** | **HIGH (100 / 100)** | **MEDIUM / HIGH (62 / 100)** | **LOW (0 / 100)** |
+| **Negotiation / Action Focus** | Rate discount & fee waiver | **MSME LAP at 33.3% LTV (Shop ₹45L)** | **Debt resolution & PM SVANidhi** |

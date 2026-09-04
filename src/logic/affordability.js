@@ -43,9 +43,10 @@ export function calculateAffordability(input, rateDetails) {
   const currentFoirPercent = monthlyIncome > 0 ? Number(((existingEmi / monthlyIncome) * 100).toFixed(1)) : 0;
 
   // 4. Default Tenure Setup (in years and months)
-  const defaultTenureYears = purpose === 'Home' ? 15 : 3;
+  const isSecuredLap = rateDetails?.isSecuredLap || (Number(input.collateralValue) >= Number(input.loanAmount)) || (purpose === 'Business' && Number(input.collateralValue) > 0);
+  const defaultTenureYears = isSecuredLap ? 10 : (purpose === 'Home' ? 15 : 3);
   const defaultTenureMonths = defaultTenureYears * 12;
-  const annualInterestRate = rateDetails.midpointRate || 12.0;
+  const annualInterestRate = rateDetails.midpointRate || (isSecuredLap ? 10.75 : 12.0);
 
   // 5. Dual Maximum Borrowing Amounts
   // Calculate principal capacity from EMI: P = EMI * [ (1+r)^n - 1 ] / [ r * (1+r)^n ]
@@ -97,7 +98,7 @@ export function calculateAffordability(input, rateDetails) {
   };
 
   // 7. Tenure Trade-Off Matrix
-  const tenureOptionsList = purpose === 'Home' ? [10, 15, 20] : [2, 3, 5];
+  const tenureOptionsList = isSecuredLap ? [7, 10, 15] : (purpose === 'Home' ? [10, 15, 20] : [2, 3, 5]);
   const tenureOptions = tenureOptionsList.map(years => {
     const months = years * 12;
     const calcEmi = calculateEmiFromPrincipal(requestedLoanAmount || borrowerSafeMaxAmount, annualInterestRate, months);

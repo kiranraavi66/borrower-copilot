@@ -171,10 +171,10 @@ The documented rules produce distinct, explainable results for the three Lokta c
    - **Why**: Salaried 50% FOIR cap gives ₹55k debt allowance. After ₹14k car EMI and ₹45k living costs, her ₹40k/mo safe ceiling easily supports her ₹8L wedding loan request (requires ~₹26.2k EMI).
 
 2. **Ravi (Kirana Store Owner, Variable Income, Unknown Credit Score, ₹15L Request)**:
-   - **Output**: **`Don't Borrow`** (or Borrow Less) | **`MEDIUM Confidence`** (55/100).
+   - **Output**: **`Borrow`** (via MSME Loan Against Property at 33.3% LTV) | **`HIGH Confidence`** (for LAP route).
    - **Business Income Definition (Option A)**: Modeled using **₹60,000/month** as Ravi's normalized primary business cash income midpoint (from his ₹40,000–₹80,000/month shop earnings range). His wife's ₹18,000/month teaching income is noted as qualitative household context but is NOT included in the uncollateralized loan affordability calculation engine. Reported ITR is ₹4,20,000/year.
-   - **Secured Loan & Property Asset Recommendation**: Unsecured cash-flow capacity caps his safe principal at ~₹8.2L. However, because Ravi owns an unencumbered shop premises worth **₹45,00,000** and seeks business expansion funding (stock line + delivery vehicle), he should explore a **Secured Business Loan** or **Loan Against Property (LAP)** to access lower interest rates (9.5%–12.5%) and longer tenures (10–15 years). **Important Nuance**: While collateral changes product options and tenures, collateral does **NOT** automatically make an unaffordable EMI affordable — monthly cash flow is still required to service the loan payments.
-   - **Credit Score**: Remains explicitly **`UNKNOWN`** (no formal credit history), which widens his interest rate band (13.25%-17.25%) without treating score as 0 or 300.
+   - **Secured MSME LAP Routing**: Unsecured personal loan rejected (EMI would exceed 85% of income). Viable exclusively via MSME Loan Against Property (LAP) by pledging his ₹45L unencumbered commercial shop (33.3% LTV) over an extended 10-year (120-month) tenure, bringing the monthly EMI to ~₹20,200/month, well within his ₹24,000/month comfortable ceiling.
+   - **Rate Band**: **9.50% – 12.00%** (Secured LAP benchmark rate).
 
 3. **Anita (Informal Delivery Rider, ₹28k Income, ₹6.5k High-Cost App Loans, 1 Bounce)**:
    - **Output**: **`Don't Borrow`** | **`LOW Confidence`** (5/100).

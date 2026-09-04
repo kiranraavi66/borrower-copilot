@@ -11,33 +11,42 @@ export function calculateInterestRate(input) {
   let baseMin = 11.5;
   let baseMax = 14.5;
 
-  switch (purpose) {
-    case 'Home':
-      baseMin = 8.5;
-      baseMax = 9.75;
-      break;
-    case 'Vehicle':
-      baseMin = 8.75;
-      baseMax = 11.0;
-      break;
-    case 'Education':
-      baseMin = 9.5;
-      baseMax = 12.0;
-      break;
-    case 'Business':
-      baseMin = 12.0;
-      baseMax = 16.0;
-      break;
-    case 'Medical':
-      baseMin = 11.5;
-      baseMax = 14.5;
-      break;
-    case 'Personal':
-    case 'Other':
-    default:
-      baseMin = 11.5;
-      baseMax = 15.0;
-      break;
+  const collateralValue = Number(input.collateralValue) || 0;
+  const loanAmount = Number(input.loanAmount) || 100000;
+  const isSecuredLap = collateralValue >= loanAmount || (purpose === 'Business' && collateralValue > 0);
+
+  if (isSecuredLap) {
+    baseMin = 9.5;
+    baseMax = 12.0;
+  } else {
+    switch (purpose) {
+      case 'Home':
+        baseMin = 8.5;
+        baseMax = 9.75;
+        break;
+      case 'Vehicle':
+        baseMin = 8.75;
+        baseMax = 11.0;
+        break;
+      case 'Education':
+        baseMin = 9.5;
+        baseMax = 12.0;
+        break;
+      case 'Business':
+        baseMin = 12.0;
+        baseMax = 16.0;
+        break;
+      case 'Medical':
+        baseMin = 11.5;
+        baseMax = 14.5;
+        break;
+      case 'Personal':
+      case 'Other':
+      default:
+        baseMin = 11.5;
+        baseMax = 15.0;
+        break;
+    }
   }
 
   // 2. Adjustments based on credit score
@@ -88,22 +97,29 @@ export function calculateInterestRate(input) {
   }
 
   // Final Interest Rate Range
-  const minRate = Math.max(7.5, Number((baseMin + scoreAdjustment + stabilityAdjustment + debtRiskAdjustment - rangeSpreadModifier).toFixed(2)));
-  const maxRate = Math.min(24.0, Number((baseMax + scoreAdjustment + stabilityAdjustment + debtRiskAdjustment + rangeSpreadModifier).toFixed(2)));
+  let minRate = Math.max(7.5, Number((baseMin + scoreAdjustment + stabilityAdjustment + debtRiskAdjustment - rangeSpreadModifier).toFixed(2)));
+  let maxRate = Math.min(24.0, Number((baseMax + scoreAdjustment + stabilityAdjustment + debtRiskAdjustment + rangeSpreadModifier).toFixed(2)));
+
+  if (isSecuredLap) {
+    minRate = 9.5;
+    maxRate = 12.0;
+  }
+
   const midpointRate = Number(((minRate + maxRate) / 2).toFixed(2));
 
   // 4. Processing Fee Assumption (Standard 1.5% of loan amount, capped)
-  const loanAmount = Number(input.loanAmount) || 100000;
   const processingFeePercent = 1.5;
   const estimatedProcessingFee = Math.max(1000, Math.min(25000, Math.round(loanAmount * (processingFeePercent / 100))));
 
   // 5. Estimated All-In Annualized Cost (Linear approximation: Nominal Rate + Fee / Tenure)
-  const defaultTermYears = purpose === 'Home' ? 15 : 3;
+  const defaultTermYears = isSecuredLap ? 10 : (purpose === 'Home' ? 15 : 3);
   const feeAnnualizedPercent = (processingFeePercent / defaultTermYears);
   const estimatedApr = Number((midpointRate + feeAnnualizedPercent).toFixed(2));
 
   const why = [
-    `Base rate range for ${purpose} loans: ${baseMin}% - ${baseMax}%.`,
+    isSecuredLap 
+      ? `Base rate range for MSME Loan Against Property (LAP): ${minRate}% - ${maxRate}%.`
+      : `Base rate range for ${purpose} loans: ${baseMin}% - ${baseMax}%.`,
     scoreExplanation,
     stabilityAdjustment > 0 ? `Income variability adds a +${stabilityAdjustment}% risk margin.` : 'Stable income helps secure competitive rates.',
     ...debtExplanation,
@@ -111,6 +127,8 @@ export function calculateInterestRate(input) {
   ];
 
   return {
+    isSecuredLap,
+    productType: isSecuredLap ? "MSME Loan Against Property (LAP)" : (purpose + " Loan"),
     rateRange: {
       min: minRate,
       max: maxRate,
