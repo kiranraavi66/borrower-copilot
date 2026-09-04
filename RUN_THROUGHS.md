@@ -45,7 +45,7 @@ All metrics, decision rules, interest rate bands, stress-test calculations, and 
   - Salaried 50% FOIR cap yields a maximum debt allowance of ₹55,000/month.
   - Subtracting existing car EMI (₹14,000) leaves an available FOIR EMI of ₹41,000/month.
   - Preserving essential living costs (₹45,000) plus a 10% safety cushion (₹11,000) establishes a comfortable EMI ceiling of **₹40,000 / month**.
-  - The 3-year EMI for ₹8L (~₹26,846/month at 12.75% midpoint) consumes only 67% of her comfortable EMI ceiling, preserving household cash flow safety.
+  - The 3-year EMI for ₹8L (~₹26,859/month at 12.75% midpoint) consumes only 67% of her comfortable EMI ceiling, preserving household cash flow safety.
 
 #### 2. Capacity Comparison: Lender Sanction vs. Borrower-Safe
 - **Estimated Lender-Capacity Range (FOIR-based)**: **₹10,99,076 – ₹12,82,255** (Midpoint Sanction: **₹12,21,195**)
@@ -56,16 +56,17 @@ All metrics, decision rules, interest rate bands, stress-test calculations, and 
 
 #### 3. Fair Interest-Rate Band & All-In Annualized Cost
 - **Fair Expected Interest-Rate Band**: **11.00% – 14.50%** (Midpoint: **12.75%**)
-- **Processing Fee Assumption**: 1.5% of principal = **₹12,000** (plus 18% GST = ₹14,160 all-in fee cost).
-- **Estimated All-In Annualized Cost**: **~13.25% APR** (Midpoint rate 12.75% + 0.50%/year linearized fee spread over 3 years).
+- **Processing Fee Assumption**: 1.5% of principal = **₹12,000** (capped at ₹25,000 max).
+- **Estimated All-In Annualized Cost**: **~13.25%** (Simplified planning approximation: midpoint rate 12.75% + 0.50%/year linearized fee spread over 3 years).
 - *Pricing Rationale*: Base personal loan range (11.5%–15.0%) receives a -0.50% prime discount due to her 780 CIBIL score and verified MNC employment stability.
 
 #### 4. EMI Ceiling & 20% Income Stress Test
 - **Comfortable Monthly EMI Ceiling**: **₹40,000 / month**
+- **Proposed Loan Monthly EMI (3-Year)**: **₹26,859 / month**
 - **20% Income-Drop Stress Test**: **PASSES STRESS TEST**
   - *Stressed Income (20% drop)*: **₹88,000 / month**
-  - *Stressed Net Surplus*: `₹88,000 - ₹45,000 (expenses) - ₹14,000 (car EMI) = +₹29,000 / month`.
-  - Even after paying the proposed ₹8L loan EMI (~₹26,846), Priya retains a positive net cash buffer of **+₹2,154 / month** under a 20% income reduction.
+  - *Formula*: `Stressed Income (₹88,000) - Essential Expenses (₹45,000) - Existing EMIs (₹14,000) - Proposed EMI (₹26,859) = +₹2,141 / month`.
+  - After paying essential expenses, car EMI, and proposed ₹8L loan EMI, Priya retains a positive net cash surplus of **+₹2,141 / month** under a 20% income reduction (`remainsAffordable`: true).
 
 #### 5. Confidence Score
 - **Confidence Rating**: **HIGH (Score: 100 / 100)**
@@ -77,7 +78,7 @@ All metrics, decision rules, interest rate bands, stress-test calculations, and 
 
 - **Opening Position**: Present her comfortable EMI ceiling (₹40,000/mo) and note that her requested ₹8L loan is well below her safe capacity (₹11.91L).
 - **Key Numbers to Verify**:
-  - Processing fee cap (target 0.5%–1.0% instead of standard 1.5%).
+  - Processing fee waiver or discount negotiation (standard 1.5% fee = ₹12,000).
   - Zero foreclosure penalty on floating rate personal loan.
 - **Branch Negotiation Script**:
   > *"Given my 780 prime CIBIL score and 5-year MNC salary stability, I qualify for top-tier rate pricing. I am looking for an interest rate at the 11.00% lower boundary of the market band, and a full waiver of the ₹12,000 processing fee."*
@@ -128,20 +129,19 @@ All metrics, decision rules, interest rate bands, stress-test calculations, and 
   - *Loan Target*: **₹15,00,000**
   - *Loan-to-Value (LTV) Ratio*: `₹15,00,000 / ₹45,00,000 = 33.3% LTV` (extremely safe collateral ratio for lenders; standard LAP allows up to 60%–65% LTV).
 - **120-Month (10-Year) Sustainable EMI Calculation**:
-  - Under a 10-year (120-month) LAP structure at 10.75% midpoint secured rate, the monthly EMI for ₹15L is **~₹20,227 / month** (~33.6% FOIR).
-  - Since **₹20,227 / month** fits comfortably under his **₹24,000 / month** ceiling, his ₹15L expansion loan is **fully viable via LAP**!
+  - Under a 10-year (120-month) LAP structure at 10.75% midpoint secured rate, the monthly EMI for ₹15L is **~₹20,451 / month** (~33.6% FOIR).
+  - Since **₹20,451 / month** fits comfortably under his **₹24,000 / month** ceiling, his ₹15L expansion loan is **fully viable via LAP**!
 
 ---
-
 ### Application Core Outputs & Underwriting Results
 
 #### 1. Decision Verdict
-- **Decision Recommendation**: **`Borrow`** (via MSME Loan Against Property; Badge: `emerald`)
+- **Decision Recommendation**: **`Borrow via MSME Loan Against Property (LAP)`** (Badge: `emerald`)
 - **Title**: **Financially Viable via MSME Loan Against Property (LAP)**
 - **Summary**: Your requested loan amount of ₹15,00,000 is viable via MSME Loan Against Property (LAP) by pledging your ₹45,00,000 commercial shop premises at 33.3% LTV over an extended 10-year tenure.
 - **Underwriting Rationale**:
   - *"Unsecured personal loan rejected (EMI would exceed 85% of income). Viable exclusively via MSME Loan Against Property (LAP) by pledging your ₹45L unencumbered commercial shop (33.3% LTV) over an extended 10-year tenure."*
-  - *"10-year (120-month) LAP EMI of ~₹20,200/month sits comfortably under your ₹24,000/month ceiling (33.6% FOIR)."*
+  - *"10-year (120-month) LAP EMI of ~₹20,451/month sits comfortably under your ₹24,000/month ceiling (34.1% FOIR)."*
   - *"Pledging your commercial shop asset secures a competitive interest rate band of 9.50% - 12.00%."*
 
 #### 2. Capacity Comparison: Secured LAP Capacity
@@ -152,15 +152,15 @@ All metrics, decision rules, interest rate bands, stress-test calculations, and 
 #### 3. Fair Interest-Rate Band & All-In Cost: Secured LAP
 - **Secured LAP Rate Band**: **9.50% – 12.00%** (Midpoint: **10.75%**)
 - **Processing Fee Assumption**: 1.5% of principal = **₹22,500** (capped).
-- **Estimated All-In Annualized Cost**: **~10.90% APR** (Midpoint rate 10.75% + 0.15%/year linearized fee spread over 10 years).
+- **Estimated All-In Annualized Cost**: **~10.90%** (Simplified planning approximation: midpoint rate 10.75% + 0.15%/year linearized fee spread over 10 years).
 
 #### 4. EMI Ceiling & 20% Income Stress Test
 - **Comfortable Monthly EMI Ceiling**: **₹24,000 / month** (40% FOIR cap on ₹60k business income).
-- **10-Year LAP Monthly EMI**: **~₹20,200 / month**
+- **10-Year LAP Monthly EMI**: **~₹20,451 / month**
 - **20% Income-Drop Stress Test**: **PASSES STRESS TEST UNDER 10-YEAR LAP**
   - *Stressed Income (20% drop)*: **₹48,000 / month**
-  - *Stressed Net Surplus*: `₹48,000 - ₹25,000 (expenses) = +₹23,000 / month`.
-  - Net surplus of +₹23,000/month comfortably covers the **~₹20,200 / month** LAP EMI under a 20% income reduction.
+  - *Formula*: `Stressed Income (₹48,000) - Essential Expenses (₹25,000) - Existing EMIs (₹0) - Proposed LAP EMI (₹20,451) = +₹2,549 / month`.
+  - After paying essential shop/household living costs and the proposed 10-year LAP loan EMI, Ravi retains a positive net cash surplus of **+₹2,549 / month** under a 20% income reduction (`remainsAffordable`: true).
 
 #### 5. Confidence Score
 - **Confidence Rating**: **MEDIUM / HIGH (Score: 62 / 100)** — Business owner (+12), Variable (+10), `UNKNOWN` score (+10), 3+ months emergency reserve (+30). High asset security for LAP.
@@ -224,7 +224,7 @@ All metrics, decision rules, interest rate bands, stress-test calculations, and 
   - Gig worker FOIR cap is reduced from 35% to 30% due to active high-cost fintech app debt.
   - 30% FOIR cap provides a total debt allowance of ₹8,400. Subtracting existing app EMIs (₹6,500) leaves only ₹1,900/month FOIR capacity.
   - Essential family living expenses (₹18,000) and existing app EMIs (₹6,500) consume ₹24,500 out of ₹28,000 income, leaving only ₹700/month buffer before safety cushions.
-  - Taking a new ₹1.5L vehicle loan (~₹5,189/month EMI at 14.88% midpoint) forces an immediate monthly household deficit of **-₹4,489 / month**.
+  - Taking a new ₹1.5L vehicle loan (~₹5,191/month EMI at 14.88% midpoint) forces an immediate monthly household deficit of **-₹4,491 / month** (and **-₹7,291 / month** under a 20% income drop).
 
 #### 2. Capacity Comparison: Lender Sanction vs. Borrower-Safe
 - **Estimated Lender-Capacity Range (FOIR-based)**: **₹49,413 – ₹57,648** (Max Lender: **₹54,903**)
@@ -236,15 +236,16 @@ All metrics, decision rules, interest rate bands, stress-test calculations, and 
 - **Fair Expected Interest-Rate Band**: **12.50% – 17.25%** (Midpoint: **14.88%**)
 - **High-Risk Fintech App Rate Context**: **30% – 36%+ APR** (her 3 active app loans incur predatory compound interest rates).
 - **Processing Fee Assumption**: 1.5% = **₹2,250**.
-- **Estimated All-In Annualized Cost**: **~15.38% APR**.
+- **Estimated All-In Annualized Cost**: **~15.38%** (Simplified planning approximation: midpoint rate 14.88% + 0.50%/year linearized fee spread over 3 years).
 - *Pricing Rationale*: Base vehicle loan range (8.75%–11.0%) incurs risk premiums: +0.75% for unknown credit score, +0.75% for highly variable income, +1.50% for high-cost app debt, and +2.00% for recent EMI bounce.
 
 #### 4. EMI Ceiling & 20% Income Stress Test
 - **Comfortable Monthly EMI Ceiling**: **₹700 / month** (Recommended New EMI: **₹0 / month**).
+- **Proposed Loan Monthly EMI (3-Year)**: **₹5,191 / month**
 - **20% Income-Drop Stress Test**: **FAILS STRESS TEST SEVERELY**
   - *Stressed Income (20% drop)*: **₹22,400 / month**
-  - *Stressed Living Expenses & App Debt*: `₹18,000 (living costs) + ₹6,500 (app EMIs) = ₹24,500 / month`.
-  - **Monthly Household Deficit**: **-₹2,100 / month DEFICIT** under a 20% income fall, even *without* taking any new loan!
+  - *Formula*: `Stressed Income (₹22,400) - Essential Expenses (₹18,000) - Existing App EMIs (₹6,500) - Proposed EMI (₹5,191) = -₹7,291 / month DEFICIT`.
+  - Taking the requested loan results in a severe post-borrowing net household deficit of **-₹7,291 / month** under a 20% income reduction (`remainsAffordable`: false).
 
 #### 5. Confidence Score
 - **Confidence Rating**: **LOW (Score: -5 clamped to 0 / 100)**
@@ -275,11 +276,11 @@ All metrics, decision rules, interest rate bands, stress-test calculations, and 
 | **FOIR Cap Applied** | 50% | 40% | 30% (5% App Penalty) |
 | **Comfortable EMI Ceiling** | **₹40,000 / month** | **₹24,000 / month** | **₹700 / month (Safe: ₹0)** |
 | **Requested Loan** | ₹8,00,000 (Personal) | ₹15,00,000 (Business) | ₹1,50,000 (Vehicle) |
-| **Decision Recommendation** | **`Borrow`** | **`Borrow` (via MSME LAP)** | **`Don't Borrow`** |
+| **Decision Recommendation** | **`Borrow`** | **`Borrow via MSME Loan Against Property (LAP)`** | **`Don't Borrow`** |
 | **Lender-Capacity Range** | ₹10,99,076 – ₹12,82,255 | ₹15,84,290 – ₹18,48,338 (LAP) | ₹49,413 – ₹57,648 |
 | **Borrower-Safe Range** | **₹10,12,699 – ₹11,91,410** | **₹14,96,274 – ₹17,60,322** (LAP) | **₹17,193 – ₹20,227** |
 | **Fair Interest Rate Band** | 11.00% – 14.50% | 9.50% – 12.00% (LAP) | 12.50% – 17.25% (App: 30%+) |
-| **Estimated All-In APR** | ~13.25% APR | ~10.90% APR | ~15.38% APR |
-| **20% Income Stress Test** | **PASS** (+₹29,000 surplus) | **PASS** (+₹23,000 surplus under LAP) | **FAIL** (-₹2,100 deficit) |
-| **Confidence Score** | **HIGH (100 / 100)** | **MEDIUM / HIGH (62 / 100)** | **LOW (0 / 100)** |
+| **Estimated All-In Annualized Cost** | ~13.25% | ~10.90% | ~15.38% |
+| **20% Income Stress Test** | **PASS** (+₹2,141/mo surplus) | **PASS** (+₹2,549/mo LAP surplus) | **FAIL** (-₹7,291/mo deficit) |
+| **Confidence Score** | **HIGH (100 / 100)** | **MEDIUM (62 / 100)** | **LOW (0 / 100)** |
 | **Negotiation / Action Focus** | Rate discount & fee waiver | **MSME LAP at 33.3% LTV (Shop ₹45L)** | **Debt resolution & PM SVANidhi** |

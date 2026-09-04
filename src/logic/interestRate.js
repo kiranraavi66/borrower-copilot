@@ -97,8 +97,11 @@ export function calculateInterestRate(input) {
   }
 
   // Final Interest Rate Range
-  let minRate = Math.max(7.5, Number((baseMin + scoreAdjustment + stabilityAdjustment + debtRiskAdjustment - rangeSpreadModifier).toFixed(2)));
-  let maxRate = Math.min(24.0, Number((baseMax + scoreAdjustment + stabilityAdjustment + debtRiskAdjustment + rangeSpreadModifier).toFixed(2)));
+  let rawMin = Math.max(7.5, Number((baseMin + scoreAdjustment + stabilityAdjustment + debtRiskAdjustment - rangeSpreadModifier).toFixed(2)));
+  let rawMax = Math.min(24.0, Number((baseMax + scoreAdjustment + stabilityAdjustment + debtRiskAdjustment + rangeSpreadModifier).toFixed(2)));
+
+  let minRate = Math.min(rawMin, rawMax);
+  let maxRate = Math.max(rawMin, rawMax);
 
   if (isSecuredLap) {
     minRate = 9.5;

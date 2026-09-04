@@ -8,32 +8,57 @@ It is **NOT a lender approval system, credit decision engine, or formal financia
 
 ---
 
-## 1. Affordability Rules
+## 1. Complete Underwriting & Affordability Rules Summary
 
-Borrower Copilot uses a Fixed Obligation to Income Ratio (FOIR) model combined with a household essential expense buffer to calculate monthly debt capacity.
+The table below documents every numeric rule and assumption built into the `src/logic/` financial decision engine.
 
 | What | Value | Why | Source |
 | :--- | :--- | :--- | :--- |
-| **FOIR Cap: Salaried / Very Stable** | **50%** of net monthly take-home income | Standard Indian retail banking maximum debt capacity limit for verified salaried applicants. | Indian Retail Banking Standard |
-| **FOIR Cap: Mostly Stable / Business** | **45%** of net monthly take-home income | Allows a 5% extra cushion to absorb mild income or business turnover variance. | my judgement |
-| **FOIR Cap: Self-Employed / Variable** | **40%** of net monthly take-home income | Provides a 10% safety margin against monthly income fluctuations. | my judgement |
-| **FOIR Cap: Freelance / Informal / Highly Variable** | **35%** of net monthly take-home income | Conservative ceiling required for gig workers or informal earners with irregular cash flows. | my judgement |
+| **FOIR Cap: Salaried (Very Stable)** | **50%** of net monthly take-home income | Maximum debt capacity limit for verified salaried applicants with very stable income. | my judgement |
+| **FOIR Cap: Mostly Stable Income** | **45%** of net monthly take-home income | Allows a 5% extra cushion to absorb mild income variance when income is mostly stable. | my judgement |
+| **FOIR Cap: Self-Employed / Variable Income** | **40%** of net monthly take-home income | Applies to self-employed individuals, business owners, or variable income earners (e.g. Ravi's 40% FOIR cap). | my judgement |
+| **FOIR Cap: Freelancer / Informal / Highly Variable** | **35%** of net monthly take-home income | Conservative ceiling required for gig workers or informal earners with irregular cash flows. | my judgement |
 | **High-Cost App Loans Impact** | Reduces FOIR cap by **5%** (e.g. 35% $\rightarrow$ 30%) | Active high-interest fintech app loans (30%+) indicate existing financial stress and high debt service burden. | my judgement |
-| **Treatment of Existing EMIs** | Subtracted directly from Max FOIR Obligation (`Max FOIR - Existing EMIs`) | Existing fixed debt obligations reduce available monthly cash flow for new loan repayment. | Indian Retail Banking Standard |
-| **Treatment of Household Expenses** | Subtracted alongside a 10% income cushion (`Income - Essential Expenses - Existing EMIs - 10% Cushion`) | Ensures new loan EMIs do not force the borrower to cut back on essential food, rent, or school fees. | my judgement |
+| **Treatment of Existing EMIs** | Subtracted directly from Max FOIR Obligation (`Max FOIR - Existing EMIs`) | Existing fixed debt obligations reduce available monthly cash flow for new loan repayment. | my judgement |
+| **Household Safety Cushion** | **10%** of net monthly take-home income | Ensures a 10% cash buffer is reserved for unexpected emergency needs before allocating debt. | my judgement |
 | **Comfortable EMI Ceiling** | `min(FOIR Available EMI, Safe Buffer EMI)` | Strict minimum ensures compliance with banking FOIR caps while protecting household living standards. | my judgement |
-| **Variable Income Treatment** | Reduces FOIR cap to 40% (or 35% if highly variable) and adds +0.75% to +1.50% interest rate risk premium | Reflects higher cash flow uncertainty and income volatility. | my judgement |
-| **Informal Income Treatment** | Reduces FOIR cap to 35% and lowers calculation confidence rating | Informal earnings lack payroll records and tax returns, creating higher underwriting friction. | my judgement |
-| **Minimum Affordability Threshold** | **₹ 0** (If Comfortable EMI $\le$ ₹0, new borrowing is disallowed) | Taking on new loan debt when monthly cash flow surplus is zero or negative leads to immediate default. | my judgement |
+| **Lender Capacity Range Multiplier** | **90% to 105%** of calculated FOIR principal | Reflects normal underwriting variance across different bank risk policies. | my judgement |
+| **Borrower-Safe Range Multiplier** | **85% to 100%** of calculated safe principal | Provides a realistic conservative planning band for household budgeting. | my judgement |
+| **Base Rate: Home Loan** | **8.50% – 9.75%** | Standard market range for secured residential mortgage loans. | my judgement |
+| **Base Rate: Vehicle Loan** | **8.75% – 11.00%** | Standard market range for secured auto/two-wheeler loans. | my judgement |
+| **Base Rate: Education Loan** | **9.50% – 12.00%** | Standard market range for student/higher education loans. | my judgement |
+| **Base Rate: Medical Loan** | **11.50% – 14.50%** | Standard market range for unsecured emergency medical financing. | my judgement |
+| **Base Rate: Personal Loan** | **11.50% – 15.00%** | Standard market range for unsecured personal loans. | my judgement |
+| **Base Rate: Business Loan (Unsecured)** | **12.00% – 16.00%** | Standard market range for unsecured MSME business expansion loans. | my judgement |
+| **Base Rate: MSME LAP (Secured)** | **9.50% – 12.00%** | Secured rate benchmark for MSME Loan Against Property backed by real estate collateral. | my judgement |
+| **Credit Score Premium: Prime (780+)** | **-0.50%** rate discount | Rewards top-tier credit histories with lower interest pricing. | my judgement |
+| **Credit Score Premium: Good (720-779)** | **0.00%** adjustment | Standard base rate pricing for healthy credit scores. | my judgement |
+| **Credit Score Premium: Fair (650-719)** | **+1.25%** risk premium | Compensates lenders for moderate credit risk. | my judgement |
+| **Credit Score Premium: Needs Work (<650)** | **+3.00%** risk premium | Substantial risk margin for impaired credit histories. | my judgement |
+| **Credit Score Premium: Unknown (`UNKNOWN`)** | **+0.75%** margin & **$\pm 1.25\%$** band widening | Kept as `UNKNOWN` (never 0 or 300); rate band widens to reflect estimation uncertainty. | my judgement |
+| **Income Volatility Premium: Variable** | **+0.75%** risk premium | Risk adjustment for self-employed/business cash flows. | my judgement |
+| **Income Volatility Premium: Highly Variable** | **+1.50%** risk premium | Risk adjustment for informal gig or freelance earnings. | my judgement |
+| **High-Cost App Debt Premium** | **+1.50%** risk premium | Additional margin when active 30%+ app loans are present. | my judgement |
+| **Recent EMI Bounce Premium** | **+2.00%** risk premium & **-20 pts** confidence | Severe risk margin for default/late-payment history in the past 6 months. | my judgement |
+| **Processing Fee Assumption** | **1.5%** of principal (min ₹1,000, max ₹25,000) | Standard administrative fee assumption across all loan types (including LAP), subject to ₹25,000 cap. | my judgement |
+| **Estimated All-in Annualized Cost** | `Midpoint Rate + (Processing Fee % / Tenure)` | Simplified linear fee-spread approximation of effective borrowing cost (incorporating assumed processing fee, NOT a cash-flow XIRR). | my judgement |
+| **Default Tenure: Standard Loans** | **3 Years (36 months)** | Standard planning duration for personal, business, vehicle, medical, and education loans. | my judgement |
+| **Default Tenure: Home Loans** | **15 Years (180 months)** | Standard long-term mortgage loan repayment duration. | my judgement |
+| **Default Tenure: Secured MSME LAP** | **10 Years (120 months)** | Extended tenure permitted for property-collateralized business financing. | my judgement |
+| **Stress Test Income Reduction** | **20%** income reduction (`0.80 * Income`) | Tests household cash flow resilience under acute economic shocks or business downturns. | my judgement |
+| **Stress Test Affordability Rule** | `Stressed Income - Expenses - Existing EMIs - Proposed EMI >= 0` | `remainsAffordable` is true ONLY when post-borrowing stressed surplus is $\ge 0$. | my judgement |
+| **Decision Threshold: Borrow** | `Requested <= Safe Max` AND `Comfortable EMI > 0` | Loan request is fully affordable under household cash flow safety limits. | my judgement |
+| **Decision Threshold: Borrow Less** | `Safe Max < Requested <= 1.15 * Lender Max` | Banks may sanction requested amount under raw FOIR, but safe limit is lower. | my judgement |
+| **Decision Threshold: Don't Borrow** | `Requested > 1.15 * Lender Max` OR `Comfortable EMI <= 0` | Loan request creates high financial distress or immediate household cash flow deficit. | my judgement |
 
 ---
 
-## 2. Maximum Loan Amount
+## 2. Maximum Loan Amount Mechanics
 
 Borrower Copilot estimates **TWO distinct maximum borrowing amounts** to highlight the difference between lender capacity and borrower safety:
 
 1. **Estimated Lender-Capacity Range (FOIR-based)**:
-   - Represents the maximum theoretical principal a bank or NBFC might consider based purely on raw 50% FOIR rules.
+   - Represents the maximum theoretical principal a bank or NBFC might consider based purely on raw FOIR rules.
    - **Important Disclaimer**: This is a capacity estimate based on income rules, **NOT a lender loan approval prediction** or credit guarantee.
    - Formula: Principal $P$ calculated from `FOIR Available EMI` across default tenure at estimated midpoint interest rate.
    - Range Band: $90\% \text{ to } 105\%$ of calculated principal.
@@ -43,140 +68,66 @@ Borrower Copilot estimates **TWO distinct maximum borrowing amounts** to highlig
    - Formula: Principal $P$ calculated from `Comfortable EMI Ceiling` across default tenure at estimated midpoint interest rate.
    - Range Band: $85\% \text{ to } 100\%$ of calculated principal.
 
-3. **Comparison of Requested Amount**:
-   - If Requested Loan $\le$ Borrower-Safe Max $\rightarrow$ **`Borrow`**.
-   - If Requested Loan $>$ Borrower-Safe Max AND $\le 1.15 \times$ Lender-Capacity Max $\rightarrow$ **`Borrow Less`**.
-   - If Requested Loan $> 1.15 \times$ Lender-Capacity Max OR Comfortable EMI $\le 0 \rightarrow$ **`Don't Borrow`**.
-
-5. **Secured Business Loans & Loan Against Property (LAP) Recommendation**:
+3. **Secured Business Loans & Loan Against Property (LAP) Recommendation**:
    - For borrowers who operate an established business and own unencumbered property assets (e.g., commercial shop premises worth ₹45 Lakhs), Borrower Copilot recommends exploring **Secured Business Loans** or **Loan Against Property (LAP)** as an alternative product structure.
-   - LAP structures offer lower interest rates (typically 9.5%–12.5%) and significantly longer tenures (10–15 years), which lowers the required monthly EMI for a given loan amount.
+   - LAP structures offer lower interest rates (typically 9.5%–12.0%) and significantly longer tenures (10–15 years), which lowers the required monthly EMI for a given loan amount.
    - **Crucial Rule on Collateral vs. Cash Flow**: Pledging collateral opens secured loan products and longer tenures, but **collateral does NOT automatically make an unaffordable monthly EMI affordable**. Underwriting and borrower safety still require verifiable monthly cash flow to meet EMI obligations without risking asset loss.
 
 ---
 
-## 3. Interest Rate Rules
+## 3. Interest Rate & All-in Cost Calculation
 
-Borrower Copilot calculates a **fair expected interest-rate band** rather than a single guaranteed rate, recognizing that actual lender pricing depends on credit risk assessment.
+Borrower Copilot calculates a **fair expected interest-rate band** rather than a single guaranteed rate:
 
-### Base Rate Bands by Loan Category
+$$\text{Estimated All-in Annualized Cost} = \text{Midpoint Interest Rate} + \left( \frac{\text{Processing Fee \%}}{\text{Tenure Years}} \right)$$
 
-- **Home Loan**: 8.50% - 9.75%
-- **Vehicle Loan**: 8.75% - 11.00%
-- **Education Loan**: 9.50% - 12.00%
-- **Medical Loan**: 11.50% - 14.50%
-- **Personal / Other Loan**: 11.50% - 15.00%
-- **Business Loan**: 12.00% - 16.00%
-
-### Credit Score Adjustments
-
-- **Prime (780+)**: -0.50% interest rate discount.
-- **Good (720-779)**: Standard base rate band (0.00% adjustment).
-- **Fair (650-719)**: +1.25% risk premium.
-- **Needs Work (<650)**: +3.00% risk premium.
-- **Unknown Credit Score (`UNKNOWN`)**:
-  - Credit score is **NEVER set to 0 or 300**.
-  - Adds a +0.75% risk premium and **widens the min-max estimation band by $\pm 1.25\%$** to reflect pricing uncertainty.
-
-### Borrower Risk Adjustments
-
-- Variable Income / Freelancer: +0.75% risk premium.
-- Highly Variable Income: +1.50% risk premium.
-- High-Cost Fintech App Loans (30%+): +1.50% risk premium.
-- Recent EMI Bounce (past 6 months): +2.00% risk premium.
-
-### Processing Fee & Estimated All-in Annualized Cost
-
-- **Processing Fee Assumption**: 1.5% of loan principal (minimum ₹1,000, maximum ₹25,000).
-- **Estimated All-in Annualized Cost**:
-  $$\text{Estimated All-in Annualized Cost} = \text{Midpoint Interest Rate} + \left( \frac{\text{Processing Fee \%}}{\text{Tenure Years}} \right)$$
-  *(Note: This is a simplified linear approximation of effective borrowing cost, NOT a cash-flow XIRR/IRR calculation).*
-
-> **Note**: No interest rate displayed by Borrower Copilot is guaranteed. Actual rates depend on lender underwriting and credit bureau verification.
+> **Note**: This is a simplified linear fee-spread approximation of effective borrowing cost (incorporating the assumed 1.5% processing fee), NOT an effective APR/XIRR calculated from actual lender cash flows.
 
 ---
 
-## 4. EMI & Tenure Rules
+## 4. 20% Income-Drop Stress Test Formula
 
-1. **EMI Ceiling**: The maximum monthly outflow allowed, defined by `Comfortable EMI Ceiling = min(FOIR Available EMI, Safe Buffer EMI)`.
-2. **EMI Calculation Method**: Standard reducing-balance loan amortization formula:
-   $$\text{EMI} = P \cdot r \cdot \frac{(1+r)^n}{(1+r)^n - 1}$$
-   *(where $P$ = principal, $r$ = monthly interest rate, $n$ = total tenure in months)*.
-3. **Tenure Assumptions**:
-   - Default Tenure: **3 Years (36 months)** for Personal, Business, Vehicle, Medical, and Education loans.
-   - Default Home Loan Tenure: **15 Years (180 months)**.
-4. **Tenure Trade-Off Rule**:
-   - **Shorter Tenure** (e.g. 2-3 years): Higher monthly EMI, but significantly lower total interest paid over the loan life.
-   - **Longer Tenure** (e.g. 5-7 years): Lower monthly EMI, but substantially higher total interest paid.
-5. **Stress-Test Assumption (20% Income Drop)**:
-   - Evaluates monthly cash flow resilience if net take-home income drops by **20%** ($\text{Stressed Income} = \text{Income} \times 0.80$).
-   - Calculates $\text{Stressed Surplus} = \text{Stressed Income} - \text{Essential Expenses} - \text{Existing EMIs}$.
-   - If Stressed Surplus $< 0$, the stress test flags a high-risk warning.
+The 20% income-drop stress test evaluates household financial resilience under economic shocks:
+
+1. $\text{Stressed Income} = \text{Monthly Take-Home Income} \times 0.80$
+2. $\text{Essential Expenses} = \text{Monthly Living Costs}$
+3. $\text{Existing Debt} = \text{Current Monthly EMIs}$
+4. $\text{Proposed New Loan EMI} = \text{Monthly EMI for requested loan at midpoint rate and default tenure}$
+5. $\text{Stressed Net Surplus / Deficit} = \text{Stressed Income} - \text{Essential Expenses} - \text{Existing EMIs} - \text{Proposed New EMI}$
+
+`remainsAffordable` is set to `true` **ONLY when Stressed Net Surplus $\ge 0$**.
 
 ---
 
-## 5. Confidence Rules
+## 5. Confidence Score Weights
 
-Borrower Copilot calculates a 0-100 confidence score to indicate calculation certainty:
+Confidence is calculated on a 0–100 scale:
 
-- **High Confidence ($\ge 70$ points)**:
-  - Verified salaried employment, stable income pattern, self-reported prime credit score (720+), and $\ge 3$ months emergency savings.
-- **Medium Confidence (45-69 points)**:
-  - Self-employed or business income, variable income stability, or **unknown credit score** with 1-2 months emergency savings.
-- **Low Confidence ($< 45$ points)**:
-  - Informal/freelance income, highly variable income, zero emergency savings, unknown credit score, active high-cost app debt (-10 pts), or recent EMI bounce (-20 pts).
-
-### Missing & Optional Information Treatment
-
-- **Unknown Credit Score**: Kept explicitly as `"UNKNOWN"`. Widens the rate estimation band rather than penalizing the score to zero.
-- **Missing Optional Inputs**: Defaults gracefully (e.g. EMI set to ₹0 if "No" selected for existing loans) without causing application errors.
+- **Employment Type**: Salaried (+15), Business owner (+12), Self-employed (+10), Other/freelance/informal (+5).
+- **Income Stability**: Very stable (+25), Mostly stable (+20), Variable (+10), Highly variable (+5).
+- **Credit Score Status**: Any known credit score (+30), `UNKNOWN` credit score (+10).
+- **Emergency Reserve**: 3+ months (+30), > 0 but < 3 months (+15), 0 months (+5).
+- **Deductions**: Active high-cost app debt (-10 pts), Recent EMI bounce in past 6 months (-20 pts).
+- **Score Clamping**: Final score is clamped to the 0–100 range (`Math.max(0, Math.min(100, score))`).
 
 ---
 
-## 6. Borrow / Borrow Less / Don't Borrow Decision Logic
+## 6. Three Test Borrower Case Studies Summary
 
-The primary recommendation classification is derived from three checks:
-
-1. **`Borrow`**:
-   - Triggered when: `Requested Amount <= Borrower-Safe Max` AND `Comfortable EMI Ceiling > 0`.
-   - Meaning: Requested loan is fully supported by household cash flow without risking essential living expenses.
-
-2. **`Borrow Less`**:
-   - Triggered when: `Requested Amount > Borrower-Safe Max` AND `Requested Amount <= 1.15 * Lender-Capacity Max`.
-   - Meaning: Banks may offer higher limits under raw FOIR, but borrowing the full amount will push monthly EMIs beyond your comfortable household ceiling. Reducing the loan amount to the Borrower-Safe target is recommended.
-
-3. **`Don't Borrow`**:
-   - Triggered when: `Requested Amount > 1.15 * Lender-Capacity Max` OR `Comfortable EMI Ceiling <= 0`.
-   - Meaning: Taking on the requested loan presents high financial risk and will cause cash flow deficits or immediate default.
-
----
-
-## 7. Limitations
-
-- **No Credit Bureau Pull**: Does not access CIBIL, Experian, Equifax, or CRIF High Mark databases.
-- **No Lender Underwriting**: Does not represent an official credit policy from any bank or NBFC.
-- **No Guarantee of Approval**: Results are educational planning estimates, not pre-approved loan offers.
-- **Lender Policy Variance**: Actual lender FOIR caps, interest rates, and loan-to-value (LTV) limits vary across institutions.
-- **Rate & Fee Variation**: Final APRs depend on GST, stamp duty, insurance premiums, and risk pricing.
-- **User Input Dependence**: Estimates depend entirely on the accuracy of user-provided income, EMI, and expense data.
-
----
-
-## 8. Three Test Borrower Case Studies
-
-The documented rules produce distinct, explainable results for the three Lokta challenge test personas:
-
-1. **Priya (Salaried MNC Engineer, 780 Score, ₹1.1L Income)**:
-   - **Output**: **`Borrow`** | **`HIGH Confidence`** (85/100).
-   - **Why**: Salaried 50% FOIR cap gives ₹55k debt allowance. After ₹14k car EMI and ₹45k living costs, her ₹40k/mo safe ceiling easily supports her ₹8L wedding loan request (requires ~₹26.2k EMI).
+1. **Priya (Salaried MNC Engineer, 780 Score, ₹1.1L Income, ₹8L Request)**:
+   - **Output**: **`Borrow`** | **`HIGH Confidence`** (100/100).
+   - **Safe Range**: ₹10,12,699 – ₹11,91,410 | **Rate Band**: 11.00% – 14.50% (Cost ~13.25%).
+   - **Stress Test**: **PASS** (`+₹2,141 / month` post-borrowing surplus under 20% income drop).
 
 2. **Ravi (Kirana Store Owner, Variable Income, Unknown Credit Score, ₹15L Request)**:
-   - **Output**: **`Borrow`** (via MSME Loan Against Property at 33.3% LTV) | **`HIGH Confidence`** (for LAP route).
-   - **Business Income Definition (Option A)**: Modeled using **₹60,000/month** as Ravi's normalized primary business cash income midpoint (from his ₹40,000–₹80,000/month shop earnings range). His wife's ₹18,000/month teaching income is noted as qualitative household context but is NOT included in the uncollateralized loan affordability calculation engine. Reported ITR is ₹4,20,000/year.
-   - **Secured MSME LAP Routing**: Unsecured personal loan rejected (EMI would exceed 85% of income). Viable exclusively via MSME Loan Against Property (LAP) by pledging his ₹45L unencumbered commercial shop (33.3% LTV) over an extended 10-year (120-month) tenure, bringing the monthly EMI to ~₹20,200/month, well within his ₹24,000/month comfortable ceiling.
-   - **Rate Band**: **9.50% – 12.00%** (Secured LAP benchmark rate).
+   - **Output**: **`Borrow via MSME Loan Against Property (LAP)`** | **`MEDIUM Confidence`** (62/100).
+   - **Safe Range (10-Yr LAP)**: ₹14,96,274 – ₹17,60,322 | **LAP Rate Band**: 9.50% – 12.00% (Cost ~10.90%).
+   - **Underwriting**: Unsecured personal loan rejected (EMI would exceed 85% of income). Viable exclusively via MSME Loan Against Property (LAP) by pledging his ₹45L unencumbered commercial shop (33.3% LTV) over a 10-year tenure (~₹20,451/mo EMI, 34.1% FOIR).
+   - **Stress Test**: **PASS** (`+₹2,549 / month` post-borrowing LAP surplus under 20% income drop).
 
-3. **Anita (Informal Delivery Rider, ₹28k Income, ₹6.5k High-Cost App Loans, 1 Bounce)**:
-   - **Output**: **`Don't Borrow`** | **`LOW Confidence`** (5/100).
-   - **High-Cost Debt & EMI Bounce Rules**: Her 3 fintech app loans (30%+ interest) reduce her FOIR cap from 35% to 30% (₹8.4k max debt cap) and add a +1.5% rate premium. Her recent EMI bounce adds a +2.0% rate risk margin and deducts 20 points from her confidence score.
-   - **Why**: Existing app loan EMIs (₹6.5k) and living costs (₹18k) consume ₹24.5k of her ₹28k income, leaving zero surplus after a 10% safety cushion. Fails 20% stress test with a -₹2.1k/mo deficit.
+3. **Anita (Informal Delivery Rider, ₹28k Income, ₹6.5k App EMIs, 1 Bounce, ₹1.5L Request)**:
+   - **Output**: **`Don't Borrow`** | **`LOW Confidence`** (0/100).
+   - **Safe Range**: ₹17,193 – ₹20,227 | **Rate Band**: 12.50% – 17.25% (Cost ~15.38%).
+   - **Underwriting**: 3 active 30%+ app loans reduce FOIR cap to 30% (₹8.4k max debt cap). Available FOIR capacity is only ₹1,900/mo. Taking ₹1.5L loan (~₹5,191 EMI) creates immediate monthly household deficit.
+   - **Stress Test**: **FAIL** (`-₹7,291 / month` post-borrowing deficit under 20% income drop).
+

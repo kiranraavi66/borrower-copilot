@@ -15,7 +15,8 @@ import {
   Award,
   ArrowRight,
   FileCheck,
-  Zap
+  Zap,
+  Building2
 } from 'lucide-react';
 import { formatINR, formatCreditScore } from '../utils/formatters';
 
@@ -259,20 +260,20 @@ export default function ResultsDashboard({ formData, results, onRecalculate, onO
           </div>
 
           {/* 20% Income Fall Stress Case */}
-          <div className={`stress-case-card ${stressCase.isSurplusDeficit ? 'stress-danger' : 'stress-warning'}`}>
+          <div className={`stress-case-card ${stressCase.remainsAffordable ? 'stress-warning' : 'stress-danger'}`}>
             <div className="stress-card-header">
               <ShieldAlert size={22} />
               <h4>20% Income-Drop Stress Test</h4>
             </div>
             <p className="stress-main-text">{stressCase.why}</p>
             <div className="stress-outcome-badge">
-              {stressCase.isSurplusDeficit ? (
+              {!stressCase.remainsAffordable ? (
                 <span className="badge-danger-fill">
-                  <XCircle size={14} /> High Risk under 20% stress
+                  <XCircle size={14} /> Deficit under 20% stress
                 </span>
               ) : (
                 <span className="badge-success-fill">
-                  <CheckCircle2 size={14} /> Remains Affordable under stress
+                  <CheckCircle2 size={14} /> Remains Affordable under 20% stress
                 </span>
               )}
             </div>

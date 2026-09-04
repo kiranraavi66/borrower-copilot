@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { TEST_BORROWERS } from '../data/testBorrowers';
+import { evaluateBorrowerAffordability } from '../logic/index.js';
 import { 
   UserCheck, 
   Briefcase, 
@@ -27,13 +28,29 @@ export default function TestBorrowers({ onLoadProfile, onOpenNegotiationCard }) 
   const currentBorrower = TEST_BORROWERS.find(b => b.id === selectedId) || TEST_BORROWERS[0];
   const { profileDetails, analysis14Points, formData } = currentBorrower;
 
+  // DERIVE FINANCIAL OUTPUTS DIRECTLY FROM LIVE ENGINE
+  const liveResult = evaluateBorrowerAffordability(formData);
+  const { confidence, interestRate, affordability, recommendation } = liveResult;
+
+  const decisionText = recommendation.decision;
+  const lenderSanctionRangeText = affordability.lenderSanctionRange.text;
+  const borrowerSafeRangeText = affordability.borrowerSafeRange.text;
+  const planningRecommendationText = recommendation.planningGuidance.guidanceNote;
+  const fairInterestRateBandText = interestRate.rateRange.text;
+  const estimatedAprText = `~ ${interestRate.estimatedApr}% APR (Estimated all-in cost with ${interestRate.processingFeePercent}% processing fee)`;
+  const emiOutflowCeilingText = `₹ ${affordability.comfortableEmiCeiling.toLocaleString('en-IN')} / month comfortable ceiling`;
+  const stressTestText = affordability.stressCase.why;
+  const confidenceLevelText = `${confidence.level} (Score ${Math.max(0, confidence.score)}/100)`;
+  const keyNumbersWhyText = recommendation.why.join(' ');
+  const tenureTradeOffText = affordability.tenureOptions.map(opt => `${opt.years} Yrs: ₹${opt.monthlyEmi.toLocaleString('en-IN')}/mo EMI (Interest ₹${(opt.totalInterest / 100000).toFixed(2)}L)`).join(' | ');
+
   // Decision styling
   let decisionBadgeClass = 'badge-emerald';
   let DecisionIcon = CheckCircle2;
-  if (analysis14Points.decision.includes('Borrow Less')) {
+  if (decisionText.includes('Borrow Less')) {
     decisionBadgeClass = 'badge-amber';
     DecisionIcon = AlertTriangle;
-  } else if (analysis14Points.decision.includes("Don't Borrow")) {
+  } else if (decisionText.includes("Don't Borrow")) {
     decisionBadgeClass = 'badge-red';
     DecisionIcon = XCircle;
   }
@@ -167,10 +184,10 @@ export default function TestBorrowers({ onLoadProfile, onOpenNegotiationCard }) 
               <div className="decision-display-row">
                 <span className={`decision-pill ${decisionBadgeClass}`}>
                   <DecisionIcon size={18} />
-                  <span>{analysis14Points.decision}</span>
+                  <span>{decisionText}</span>
                 </span>
                 <span className="decision-note-inline">
-                  (Planning recommendation based on documented rules in RULES.md)
+                  (Planning recommendation derived dynamically from live calculation engine)
                 </span>
               </div>
             </div>
@@ -181,7 +198,7 @@ export default function TestBorrowers({ onLoadProfile, onOpenNegotiationCard }) 
             <span className="point-number">4</span>
             <div className="point-content">
               <h4>Estimated Lender-Likely Sanction Range</h4>
-              <div className="point-value">{analysis14Points.lenderSanctionRange}</div>
+              <div className="point-value">{lenderSanctionRangeText}</div>
             </div>
           </div>
 
@@ -190,7 +207,7 @@ export default function TestBorrowers({ onLoadProfile, onOpenNegotiationCard }) 
             <span className="point-number">5</span>
             <div className="point-content">
               <h4>Borrower-Safe Affordable Range</h4>
-              <div className="point-value text-primary">{analysis14Points.borrowerSafeRange}</div>
+              <div className="point-value text-primary">{borrowerSafeRangeText}</div>
             </div>
           </div>
 
@@ -199,7 +216,7 @@ export default function TestBorrowers({ onLoadProfile, onOpenNegotiationCard }) 
             <span className="point-number">6</span>
             <div className="point-content">
               <h4>Which Amount Should the Borrower Use for Planning?</h4>
-              <p className="planning-callout-text">{analysis14Points.planningRecommendation}</p>
+              <p className="planning-callout-text">{planningRecommendationText}</p>
             </div>
           </div>
 
@@ -208,7 +225,7 @@ export default function TestBorrowers({ onLoadProfile, onOpenNegotiationCard }) 
             <span className="point-number">7</span>
             <div className="point-content">
               <h4>Fair Interest-Rate Band</h4>
-              <div className="point-value">{analysis14Points.fairInterestRateBand}</div>
+              <div className="point-value">{fairInterestRateBandText}</div>
             </div>
           </div>
 
@@ -217,7 +234,7 @@ export default function TestBorrowers({ onLoadProfile, onOpenNegotiationCard }) 
             <span className="point-number">8</span>
             <div className="point-content">
               <h4>Estimated All-In APR / Effective Cost</h4>
-              <div className="point-value text-emerald">{analysis14Points.estimatedApr}</div>
+              <div className="point-value text-emerald">{estimatedAprText}</div>
             </div>
           </div>
 
@@ -226,7 +243,7 @@ export default function TestBorrowers({ onLoadProfile, onOpenNegotiationCard }) 
             <span className="point-number">9</span>
             <div className="point-content">
               <h4>Comfortable Monthly EMI Ceiling</h4>
-              <div className="point-value">{analysis14Points.emiOutflowCeiling}</div>
+              <div className="point-value">{emiOutflowCeilingText}</div>
             </div>
           </div>
 
@@ -235,7 +252,7 @@ export default function TestBorrowers({ onLoadProfile, onOpenNegotiationCard }) 
             <span className="point-number">10</span>
             <div className="point-content">
               <h4>Tenure Trade-Off Analysis</h4>
-              <p>{analysis14Points.tenureTradeOff}</p>
+              <p>{tenureTradeOffText}</p>
             </div>
           </div>
 
@@ -244,7 +261,7 @@ export default function TestBorrowers({ onLoadProfile, onOpenNegotiationCard }) 
             <span className="point-number">11</span>
             <div className="point-content">
               <h4>20% Income-Drop Stress Test</h4>
-              <p>{analysis14Points.stressTest20Percent}</p>
+              <p>{stressTestText}</p>
             </div>
           </div>
 
@@ -253,7 +270,7 @@ export default function TestBorrowers({ onLoadProfile, onOpenNegotiationCard }) 
             <span className="point-number">12</span>
             <div className="point-content">
               <h4>Calculation Confidence Level</h4>
-              <div className="point-value">{analysis14Points.confidenceLevel}</div>
+              <div className="point-value">{confidenceLevelText}</div>
             </div>
           </div>
 
@@ -262,7 +279,7 @@ export default function TestBorrowers({ onLoadProfile, onOpenNegotiationCard }) 
             <span className="point-number">13</span>
             <div className="point-content">
               <h4>Explanation of Key Numbers & Financial Rationale</h4>
-              <p>{analysis14Points.importantNumbersWhy}</p>
+              <p>{keyNumbersWhyText}</p>
             </div>
           </div>
 

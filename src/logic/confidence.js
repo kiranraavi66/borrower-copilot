@@ -69,11 +69,14 @@ export function calculateConfidence(input) {
     factors.push('Active high-cost fintech app loans indicate existing debt stress');
   }
 
+  // 5. Clamp Score to 0 - 100
+  const normalizedScore = Math.max(0, Math.min(100, score));
+
   // Determine Level
   let level = 'MEDIUM';
-  if (score >= 70) {
+  if (normalizedScore >= 70) {
     level = 'HIGH';
-  } else if (score < 45) {
+  } else if (normalizedScore < 45) {
     level = 'LOW';
   }
 
@@ -88,7 +91,7 @@ export function calculateConfidence(input) {
 
   return {
     level,
-    score,
+    score: normalizedScore,
     factors,
     why
   };

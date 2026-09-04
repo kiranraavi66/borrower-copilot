@@ -80,21 +80,28 @@ export function calculateAffordability(input, rateDetails) {
       : '₹ 0 (No Borrower-Safe Capacity)'
   };
 
-  // 6. Stress Case: 20% Income Drop Scenario
+  // 6. Stress Case: 20% Income Drop Scenario (Includes Proposed New Loan EMI)
+  const proposedNewEmi = calculateEmiFromPrincipal(requestedLoanAmount || borrowerSafeMaxAmount, annualInterestRate, defaultTenureMonths);
   const stressedIncome = Math.round(monthlyIncome * 0.80);
   const stressedMaxFoirObligation = Math.round(stressedIncome * foirCap);
   const stressedAvailableEmi = Math.max(0, stressedMaxFoirObligation - existingEmi);
-  const stressedNetSurplus = stressedIncome - essentialExpenses - existingEmi;
+  const stressedNetSurplus = stressedIncome - essentialExpenses - existingEmi - proposedNewEmi;
+  const isSurplusDeficit = stressedNetSurplus < 0;
+  const remainsAffordable = stressedNetSurplus >= 0;
 
   const stressCase = {
     incomeFallPercent: 20,
     stressedIncome,
+    essentialExpenses,
+    existingEmi,
+    proposedNewEmi,
     stressedAvailableEmi,
     stressedNetSurplus,
-    isSurplusDeficit: stressedNetSurplus < 0,
-    why: stressedNetSurplus < 0 
-      ? `A 20% income reduction to ₹${stressedIncome.toLocaleString('en-IN')} would cause a monthly household DEFICIT of -₹${Math.abs(stressedNetSurplus).toLocaleString('en-IN')}/month.`
-      : `If income drops 20% to ₹${stressedIncome.toLocaleString('en-IN')}, monthly net surplus narrows to ₹${stressedNetSurplus.toLocaleString('en-IN')}.`
+    isSurplusDeficit,
+    remainsAffordable,
+    why: remainsAffordable
+      ? `If income drops 20% to ₹${stressedIncome.toLocaleString('en-IN')}, monthly net surplus remains positive at +₹${stressedNetSurplus.toLocaleString('en-IN')}/month after paying essential expenses (₹${essentialExpenses.toLocaleString('en-IN')}), existing EMIs (₹${existingEmi.toLocaleString('en-IN')}), and proposed new loan EMI (₹${proposedNewEmi.toLocaleString('en-IN')}).`
+      : `A 20% income reduction to ₹${stressedIncome.toLocaleString('en-IN')} would cause a monthly household DEFICIT of -₹${Math.abs(stressedNetSurplus).toLocaleString('en-IN')}/month after paying essential expenses (₹${essentialExpenses.toLocaleString('en-IN')}), existing EMIs (₹${existingEmi.toLocaleString('en-IN')}), and proposed new loan EMI (₹${proposedNewEmi.toLocaleString('en-IN')}).`
   };
 
   // 7. Tenure Trade-Off Matrix

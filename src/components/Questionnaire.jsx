@@ -18,7 +18,8 @@ import {
   HeartPulse, 
   HelpCircle, 
   CheckCircle,
-  PiggyBank
+  PiggyBank,
+  TrendingUp
 } from 'lucide-react';
 import { formatINR, parseCleanNumber } from '../utils/formatters';
 

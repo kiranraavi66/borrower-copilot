@@ -4,7 +4,7 @@
 - [x] **README.md**: Complete project overview, tech stack, local setup instructions, test borrower instructions, and limitations.
 - [x] **RULES.md**: Complete documentation of all financial formulas, FOIR caps, rate bands, all-in cost calculations, and confidence rules.
 - [x] **Priya Run-Through**: Salaried software engineer persona showing `Borrow` decision & `HIGH` confidence.
-- [x] **Ravi Run-Through**: Self-employed kirana store owner persona showing `Don't Borrow` decision (exceeds ₹8.2L safe cap) & `UNKNOWN` credit score handling.
+- [x] **Ravi Run-Through**: Self-employed kirana store owner persona showing `Borrow via MSME Loan Against Property (LAP)` decision (via shop property collateral at 33.3% LTV over 10-year tenure) & `UNKNOWN` credit score handling.
 - [x] **Anita Run-Through**: Informal delivery rider persona showing `Don't Borrow` decision (high-cost app loans & 1 bounce reduce FOIR cap to 30%) & `LOW` confidence.
 - [x] **Negotiation Card**: One-screen printable/copyable card with 5 essential lender questions.
 - [x] **Adaptive Questionnaire**: 9-step wizard with conditional follow-up logic, high-cost app debt and EMI bounce toggles, Indian Rupee formatting, step validation, and review screen.

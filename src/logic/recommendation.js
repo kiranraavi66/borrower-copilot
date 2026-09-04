@@ -26,16 +26,22 @@ export function calculateRecommendation(input, affordability, confidence) {
   const why = [];
 
   // Decision classification logic
+  const ltvPercent = collateralValue > 0 ? Number(((requestedAmount / collateralValue) * 100).toFixed(1)) : 0;
+  const lapTenureYears = affordability.defaultTenureYears || 10;
+  const lapTenureMonths = lapTenureYears * 12;
+  const lapEmi = affordability.stressCase.proposedNewEmi || 0;
+  const totalMonthlyDebt = affordability.existingEmi + lapEmi;
+  const foirPercent = affordability.monthlyIncome > 0 ? Number(((totalMonthlyDebt / affordability.monthlyIncome) * 100).toFixed(1)) : 0;
+
   if (isSecuredLap && requestedAmount <= safeMax) {
-    decision = 'Borrow';
+    decision = 'Borrow via MSME Loan Against Property (LAP)';
     badgeColor = 'emerald';
     title = 'Financially Viable via MSME Loan Against Property (LAP)';
-    const ltvPercent = collateralValue > 0 ? ((requestedAmount / collateralValue) * 100).toFixed(1) : '33.3';
-    summary = `Your requested loan amount of ₹${requestedAmount.toLocaleString('en-IN')} is viable via MSME Loan Against Property (LAP) by pledging your ₹${collateralValue.toLocaleString('en-IN')} commercial shop premises at ${ltvPercent}% LTV over an extended 10-year tenure.`;
+    summary = `Your requested loan amount of ₹${requestedAmount.toLocaleString('en-IN')} is viable via MSME Loan Against Property (LAP) by pledging your ₹${collateralValue.toLocaleString('en-IN')} property collateral at ${ltvPercent}% LTV over an extended ${lapTenureYears}-year tenure.`;
 
-    why.push('Unsecured personal loan rejected (EMI would exceed 85% of income). Viable exclusively via MSME Loan Against Property (LAP) by pledging your ₹45L unencumbered commercial shop (33.3% LTV) over an extended 10-year tenure.');
-    why.push(`10-year (120-month) LAP EMI of ~₹20,200/month sits comfortably under your ₹${comfortableEmi.toLocaleString('en-IN')}/month ceiling (33.6% FOIR).`);
-    why.push('Pledging your commercial shop asset secures a competitive interest rate band of 9.50% - 12.00%.');
+    why.push(`Unsecured personal loan rejected due to high monthly EMI. Viable exclusively via MSME Loan Against Property (LAP) by pledging property collateral worth ₹${collateralValue.toLocaleString('en-IN')} (${ltvPercent}% LTV) over an extended ${lapTenureYears}-year tenure.`);
+    why.push(`${lapTenureYears}-year (${lapTenureMonths}-month) LAP EMI of ~₹${lapEmi.toLocaleString('en-IN')}/month sits comfortably under your ₹${comfortableEmi.toLocaleString('en-IN')}/month ceiling (${foirPercent}% FOIR).`);
+    why.push('Pledging your property collateral secures a competitive interest rate band of 9.50% - 12.00%.');
   } else if (comfortableEmi <= 0 || requestedAmount > lenderMax * 1.15) {
     decision = "Don't Borrow";
     badgeColor = 'red';
@@ -80,8 +86,8 @@ export function calculateRecommendation(input, affordability, confidence) {
   if (isSecuredLap || input.loanPurpose === 'Business' || input.incomeType === 'Business owner') {
     securedLoanAdvice = {
       title: "MSME Loan Against Property (LAP) Routing Active",
-      recommendation: "Because you operate an established business and own unencumbered commercial shop premises worth ₹45 Lakhs, your facility is routed to MSME Loan Against Property (LAP). LAP structures offer 9.50%–12.00% interest rates and extended 10-year (120-month) tenures, bringing monthly EMI to ~₹20,200/mo.",
-      importantNuance: "Unsecured personal loan rejected (EMI would exceed 85% of income). Viable exclusively via MSME Loan Against Property (LAP) by pledging your ₹45L unencumbered commercial shop (33.3% LTV) over an extended 10-year tenure."
+      recommendation: `Because you own unencumbered property collateral worth ₹${collateralValue.toLocaleString('en-IN')}, your facility is routed to MSME Loan Against Property (LAP). LAP structures offer 9.50%–12.00% interest rates and extended ${lapTenureYears}-year (${lapTenureMonths}-month) tenures, bringing monthly EMI to ~₹${lapEmi.toLocaleString('en-IN')}/mo (${ltvPercent}% LTV).`,
+      importantNuance: `Unsecured personal loan for ₹${requestedAmount.toLocaleString('en-IN')} is rejected due to excessive EMI burden. Viable exclusively via MSME Loan Against Property (LAP) by pledging your property collateral worth ₹${collateralValue.toLocaleString('en-IN')} (${ltvPercent}% LTV) over an extended ${lapTenureYears}-year tenure.`
     };
   }
 

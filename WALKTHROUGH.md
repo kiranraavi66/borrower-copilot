@@ -38,7 +38,7 @@ Second, **Safe Surplus Formula**: We compute available FOIR EMI, but we ALSO com
 $$\text{Safe Buffer EMI} = \text{Monthly Income} - \text{Essential Expenses} - \text{Existing EMIs} - (10\% \times \text{Income})$$
 The Comfortable EMI Ceiling is the strict minimum of the FOIR cap and the Safe Buffer.
 
-Third, **All-in APR Cost Disclosure**: We display a fair interest rate band (`X% - Y%`) and calculate an Estimated All-in Annualized Cost incorporating processing fees and GST. We *never* show a single guaranteed interest rate.
+Third, **All-in APR Cost Disclosure**: We display a fair interest rate band (`X% - Y%`) and calculate an Estimated All-in Annualized Cost incorporating the assumed processing fee. We *never* show a single guaranteed interest rate.
 
 Fourth, **20% Income Stress Testing**: We simulate a 20% drop in monthly earnings to test whether the household surplus remains positive or falls into a dangerous monthly deficit under economic shocks."
 
@@ -52,11 +52,11 @@ First, **Priya**—a salaried MNC engineer in Bengaluru earning ₹1.10 Lakhs/mo
 
 Second, **Ravi**—a kirana store owner in Mysuru with variable income, an `UNKNOWN` credit score, and a ₹15 Lakh business expansion request. We enforce **Option A**: modeling his cash-flow capacity on **₹60,000/month**—the normalized midpoint of his shop earnings—while noting his wife’s ₹18k teaching income as qualitative context. An unsecured ₹15 Lakh loan requires ~₹52,382/month EMI, which consumes 87% of his income and fails unsecured personal loan limits.
 
-However, because Ravi owns an unencumbered shop premises worth **₹45 Lakhs**, the engine routes his facility to **MSME Loan Against Property (LAP)** at **33.3% LTV**. LAP lowers rates to 9.5%–12.0% and extends tenures to **10 years (120 months)**, bringing the monthly EMI down to **~₹20,200/month** (33.6% FOIR). This sits comfortably inside his ₹24,000/month ceiling, yielding a **`Borrow` verdict via the 10-year LAP route**. We emphasize our core rule: *collateral opens LAP product routes and 10-year tenures, but collateral does not automatically make an unaffordable EMI affordable*—monthly cash flow is still required to service the loan.
+However, because Ravi owns an unencumbered shop premises worth **₹45 Lakhs**, the engine routes his facility to **MSME Loan Against Property (LAP)** at **33.3% LTV**. LAP lowers rates to 9.5%–12.0% and extends tenures to **10 years (120 months)**, bringing the monthly EMI down to **~₹20,451/month** (34.1% FOIR). This sits comfortably inside his ₹24,000/month ceiling, yielding a **`Borrow via MSME Loan Against Property (LAP)`** verdict. We emphasize our core rule: *collateral opens LAP product routes and 10-year tenures, but collateral does not automatically make an unaffordable EMI affordable*—monthly cash flow is still required to service the loan.
 
 Third, **Anita**—an informal delivery rider in Hubballi earning ₹28,000/month with 2 children, an unemployed husband, zero savings, 3 active fintech app loans totaling ₹35,000 at 30%+ interest, and a recent EMI bounce. Anita’s profile triggers multiple risk deductions. Her active high-cost app debt reduces her FOIR cap from 35% to 30%, giving her a max debt allowance of ₹8,400. After subtracting her existing ₹6,500 app EMIs and ₹18,000 family living costs, her comfortable EMI ceiling is only **₹700 per month**.
 
-Taking a new ₹1.5 Lakh loan would force an immediate monthly household deficit of over ₹4,400. Furthermore, under our **20% Income-Drop Stress Test**, Anita’s household already faces a **-₹2,100 per month deficit** even without taking a new loan! The engine delivers a **`Don't Borrow`** recommendation with a **LOW confidence rating (0/100)**. Our Negotiation Card directs her to PM SVANidhi micro-livelihood schemes and MFI debt consolidation."
+Taking a new ₹1.5 Lakh loan would force an immediate monthly household deficit of over ₹4,400. Furthermore, under our **20% Income-Drop Stress Test** incorporating the proposed loan EMI, Anita’s household faces a severe **-₹7,291 per month deficit**. The engine delivers a **`Don't Borrow`** recommendation with a **LOW confidence rating (0/100)**. Our Negotiation Card directs her to PM SVANidhi micro-livelihood schemes and MFI debt consolidation."
 
 ---
 

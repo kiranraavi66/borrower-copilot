@@ -40,21 +40,10 @@ export const TEST_BORROWERS = [
       emergencyMonths: 6
     },
 
-    // 14-Point Structured Case Study Analysis
+    // Case Study Question & Answer Metadata (Financial outputs are calculated live by evaluateBorrowerAffordability)
     analysis14Points: {
       questionsAsked: '9 adaptive questionnaire questions covering income type, net monthly earnings, income stability, existing car EMI, requested loan target, loan purpose, credit score, living expenses, and emergency savings.',
-      answersSummary: 'Salaried (MNC), ₹1,10,000/mo income, Very Stable, ₹14,000/mo car EMI, ₹8,00,000 loan request, Personal (Wedding), 780 CIBIL score, ₹45,000 essential expenses (including ₹28k rent), 6 months emergency savings.',
-      decision: 'Borrow',
-      lenderSanctionRange: '₹ 11,00,000 - ₹ 12,80,000',
-      borrowerSafeRange: '₹ 11,50,000 - ₹ 12,20,000',
-      planningRecommendation: 'Use the Borrower-Safe Amount (₹12.2L). Since requested loan (₹8L) is lower than ₹12.2L, borrowing ₹8L is fully sustainable.',
-      fairInterestRateBand: '10.5% - 13.5%',
-      estimatedApr: '~ 11.5% APR (including 1.5% processing fee)',
-      emiOutflowCeiling: '₹ 40,000 / month comfortable ceiling',
-      tenureTradeOff: '3 Years: ₹26,180/mo EMI (Total Interest ₹1.42L) | 5 Years: ₹17,390/mo EMI (Total Interest ₹2.43L). 3-year term is recommended to save ₹1.01L in interest.',
-      stressTest20Percent: 'Passes Stress Test. If income drops 20% to ₹88,000/mo, net monthly surplus remains positive at ₹15,000/mo.',
-      confidenceLevel: 'HIGH (Score 85/100). Verifiable salaried payslips, known prime 780 score, and 6 months emergency buffer.',
-      importantNumbersWhy: 'Salaried 50% FOIR cap gives ₹55k max debt capacity. Subtracting ₹14k car EMI and preserving ₹45k household costs + ₹11k safety cushion leaves a ₹40,000/mo comfortable ceiling supporting up to ₹12.2L safe principal.',
+      answersSummary: 'Salaried (MNC), ₹1,10,000/mo income, Very Stable, ₹14,000/mo car EMI, ₹8,00,000 loan request, Personal (Wedding), 780 CIBIL score, ₹45,00,00 essential expenses (including ₹28k rent), 6 months emergency savings.',
       negotiationCardAvailable: true
     }
   },
@@ -97,21 +86,10 @@ export const TEST_BORROWERS = [
       emergencyMonths: 3
     },
 
-    // 14-Point Structured Case Study Analysis
+    // Case Study Question & Answer Metadata (Financial outputs are calculated live by evaluateBorrowerAffordability)
     analysis14Points: {
       questionsAsked: '9 adaptive questionnaire questions capturing cash business income, income variability, lack of existing EMIs, business expansion loan target, unknown credit score, shop property collateral, and household costs.',
-      answersSummary: 'Business owner (Kirana 14 yrs), ₹60,000/mo business income (midpoint), Variable, ₹0 existing EMI, ₹15,00,000 loan request, Business, UNKNOWN credit score, ₹45,00,000 unencumbered shop asset (33.3% LTV), ₹25,000 essential expenses, 3 months emergency savings.',
-      decision: 'Borrow (via MSME Loan Against Property)',
-      lenderSanctionRange: '₹ 15,00,000 - ₹ 25,00,000 (Secured LAP LTV Capacity)',
-      borrowerSafeRange: '₹ 15,00,000 (10-Year LAP Tenure)',
-      planningRecommendation: 'Unsecured personal loan rejected (EMI would exceed 85% of income). Viable exclusively via MSME Loan Against Property (LAP) by pledging your ₹45L unencumbered commercial shop (33.3% LTV) over an extended 10-year tenure.',
-      fairInterestRateBand: '9.50% - 12.00%',
-      estimatedApr: '~ 10.50% - 11.50% APR (Secured LAP pricing)',
-      emiOutflowCeiling: '₹ 24,000 / month comfortable ceiling (LAP EMI ~₹20,200/mo)',
-      tenureTradeOff: '7 Years: ₹25,500/mo EMI | 10 Years (120 Months): ₹20,200/mo EMI (33.6% FOIR). 10-year term fits comfortably under your ₹24,000/mo ceiling.',
-      stressTest20Percent: 'Passes stress test under 10-year LAP. If cash income falls 20% to ₹48,000/mo, net surplus of ₹23,000/mo covers the ₹20,200/mo LAP EMI.',
-      confidenceLevel: 'HIGH (Score 80/100 for LAP route backed by ₹45L shop asset).',
-      importantNumbersWhy: 'Unsecured personal loan rejected (EMI would exceed 85% of income). Viable exclusively via MSME Loan Against Property (LAP) by pledging your ₹45L unencumbered commercial shop (33.3% LTV) over an extended 10-year tenure.',
+      answersSummary: 'Business owner (Kirana 14 yrs), ₹60,000/mo business income (midpoint), Variable, ₹0 existing EMI, ₹15,00,000 loan request, Business, UNKNOWN credit score, ₹45,00,000 unencumbered shop asset, ₹25,000 essential expenses, 3 months emergency savings.',
       negotiationCardAvailable: true
     }
   },
@@ -155,21 +133,10 @@ export const TEST_BORROWERS = [
       emergencyMonths: 0
     },
 
-    // 14-Point Structured Case Study Analysis
+    // Case Study Question & Answer Metadata (Financial outputs are calculated live by evaluateBorrowerAffordability)
     analysis14Points: {
       questionsAsked: '9 adaptive questionnaire questions capturing informal gig income, high income variability, active high-cost app loan EMIs, recent EMI bounce flag, scooter loan target, unknown credit score, and 0 emergency savings.',
       answersSummary: 'Freelancer/Informal, ₹28,000/mo income, Highly Variable, ₹6,500/mo app loan EMI (30%+ interest, 1 bounce), ₹1,50,000 loan request, Vehicle (EV Scooter), UNKNOWN credit score, ₹18,000 essential family expenses, 0 emergency savings.',
-      decision: "Don't Borrow",
-      lenderSanctionRange: '₹ 25,000 - ₹ 55,000 (High rejection probability)',
-      borrowerSafeRange: '₹ 0 - ₹ 15,000',
-      planningRecommendation: 'Do NOT take on new loan debt. Focus immediately on paying off existing 30%+ app loans before attempting vehicle financing.',
-      fairInterestRateBand: '18.0% - 24.0%',
-      estimatedApr: '~ 22.25% (Estimated all-in annualized cost including high-risk app debt & EMI bounce premium)',
-      emiOutflowCeiling: '₹ 0 / month comfortable ceiling',
-      tenureTradeOff: '2 Years: ₹7,500/mo EMI (immediate default risk!) | 3 Years: ₹5,400/mo EMI. Taking new loan would cause severe household deficit.',
-      stressTest20Percent: 'FAILS STRESS TEST. A 20% income fall to ₹22,400/mo results in a monthly household DEFICIT of -₹2,100/mo.',
-      confidenceLevel: 'LOW (Score 5/100). Informal income, high-cost app loans, recent EMI bounce, zero emergency savings, and unknown credit history.',
-      importantNumbersWhy: 'Informal income FOIR cap is 35%, reduced to 30% due to high-cost app loan stress (₹8,400 max debt allowance). Existing app loan EMIs (₹6,500) and household expenses (₹18,000) consume ₹24,500 out of ₹28,000 income, leaving zero surplus after a 10% safety cushion.',
       negotiationCardAvailable: true
     }
   }
